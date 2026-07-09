@@ -17,7 +17,8 @@ This repository documents hands-on security assessments, exploit mechanics, and 
 ## 2. Business Logic & Parameter Manipulation
 * **Objective:** Evaluate multi-step e-commerce workflows to ensure financial constraints and state rules are strictly enforced at the server layer.
 * **Vulnerabilities Tested:**
-  * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter.
+  * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter. 
+    * 📄 **[View Step-by-Step Lab Write-Up: Excessive Trust in Client-Side Controls](./labs/excessive-trust-client-controls.md)**
   * **Boundary Value Injection (Negative Quantities):** Injected negative integers into shopping cart quantity fields to artificially subtract balances and offset the total order value.
   * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
 * **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data and a total lack of server-side validation regarding numerical boundaries and logical sequence progression.
