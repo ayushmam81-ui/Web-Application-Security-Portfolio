@@ -44,20 +44,24 @@ The `/admin` path now opened a complete administrative dashboard. From this cons
 ### 3. Visual Evidence
 
 #### Lab Objective Context:
-![Lab Parameters Summary](../images/image%20(3).png)
+![Lab Parameters Summary](../images/lab3-objective.png)
 *Figure 1: The administrative target requirement to remove carlos.*
 
 #### Boundary Error on Direct Access:
-![Admin Access Restriction Screen](../images/image%20(4).png)
+![Admin Access Restriction Screen](../images/lab3-restricted-panel.png)
 *Figure 2: Server enforcing domain restrictions on public access routes.*
 
 #### Verification via Email Sandbox Client:
-![Email Delivery Simulation Context](../images/image%20(5).png)
-*Figure 3: Registering the account and validating using the email simulation client.*
+![Email Delivery Simulation Context](../images/lab3-email-client.png)
+*Figure 4: The email sandbox interaction platform used to handle token delivery.*
 
-#### Parameter Registration Profile Update:
-![Successful Administrative Profile Assignment](../images/image%20(6).png)
-*Figure 4: Bypassing rules by updating the account email to a spoofed administrative substring.*
+#### Exploiting Registration Logic Constraints:
+![Registration Input Requirements](../images/lab3-register-page.png)
+*Figure 3: Exploiting loose validation mechanics on the user signup endpoint.*
+
+#### Successful Administrative Profile Assignment:
+![Privileged Account Assignment State](../images/lab3-admin-email.png)
+*Figure 5: Target validation overview confirming account execution permissions.*
 
 ---
 
