@@ -23,7 +23,6 @@ This repository documents hands-on security assessments, exploit mechanics, and 
   * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
 * **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data and a total lack of server-side validation regarding numerical boundaries and logical sequence progression.
 * **Remediation Implemented:** Established that all transaction parameters, balances, and logic checks must be hard-validated and calculated exclusively on the server side.
-
 ---
 
 ## 3. Registration Logic & Access Control Bypass
