@@ -3,60 +3,56 @@ The information, methodologies, and techniques documented in this write-up are i
 
 ***
 
-# Lab Write-Up: High-Level Logic Vulnerability (Boundary Value Injection)
+# Lab Write-Up: High-Level Logic Vulnerability
 
 ### Portfolio Information
 * **Author:** Ayushma M
 * **Main Repository:** [github.com/ayushmam81-ui/Web-Application-Security-Portfolio](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio)
-* **Direct File Link:** [labs/high-level-logic-vulnerabilities.md](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/high-level-logic-vulnerabilities.md)
+* **Direct File Link:** [labs/high-level-logic-vulnerability.md](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/high-level-logic-vulnerability.md)
 
 ---
 
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
-* **Vulnerability Class:** Business Logic Vulnerability / Boundary Value Injection
-* **Objective:** Exploit a flaw in the cart validation logic to purchase a high-value item (leather jacket) using a fixed store credit constraint of $100.00.
+* **Vulnerability Class:** Business Logic Vulnerability / Flawed Input Validation
+* **Objective:** Exploit flaws within the application's purchasing workflow to purchase a high-value item ("Lightweight l33t leather jacket") for an unintended price within the boundary constraints of the allocated store credit balance ($100.00).
 
 ---
 
 ### 2. Analysis & Methodology
 
-#### Step 1: Initial Assessment & Store Credit Constraints
-I authenticated into the e-commerce store and noted that my account was restricted to a fixed store credit balance of $100.00. I located the target product (the jacket) specified in the lab requirements. Because the unit cost exceeded my total store credit, a standard checkout sequence was impossible, and direct price parameter tampering was thoroughly blocked or uneditable in this environment.
+#### Step 1: Baseline Workflow Assessment
+I logged into the store application using the provided customer credentials (`wiener:peter`) and analyzed the cart submission workflow. When a user adds an item to the cart, the client sends a POST request containing application parameters like `productId` and `quantity`.
 
-#### Step 2: Testing Boundary Values via Negative Quantities
-To test how the application parsed numerical input constraints, I intercepted the "add to cart" request for an item using Burp Suite. Instead of passing positive integers, I injected a negative value into the quantity field. 
+#### Step 2: Testing Parameter Boundaries
+The application relies on client-side state manipulation constraints rather than validating parameters purely on the server side. To exploit this logic flaw, I added the targeted "Lightweight l33t leather jacket" ($1337.00) to the shopping cart. Since the item exceeded my total store credit balance, I intercepted the product addition request via Burp Suite and sent it over to the **Repeater** module for precise parameter tuning.
 
-The application accepted the negative integer, calculating the subtotal as a negative value. This confirmed that the backend processing layer failed to perform data validation or sanity checks against numerical boundaries (imposing a minimum value restriction of >= 1).
+#### Step 3: Injecting Negative Value Payloads
+In Burp Repeater, I manipulated the cart input behavior by supplying negative integer values inside the `quantity` parameter payload (e.g., setting `quantity=-10` or `quantity=-19` on cheaper secondary filler products like "Pet Experience Days" and "Caution Sign"). 
 
-#### Step 3: Manipulating the Cart Logic & Exploitation
-While the negative subtotal successfully lowered the overall cart value, the e-commerce platform strictly prohibited finalizing an order if the grand total was a negative number (as the application would owe the customer money). 
+The server processed the negative integers literally without sanity-checking the lower mathematical boundaries of the request. Instead of throwing an error or dropping the negative values, the backend added the negative price products to the cart array. This offset the $1337.00 price tag of the jacket, driving the absolute final cart valuation down below my current store credit limit to an affordable balance of **$16.22**.
 
-To bypass this check, I structured a multi-item payload in the cart:
-1. I added the target jacket to the cart at its standard price.
-2. I injected negative quantities of secondary items to create a negative balance offset.
-3. I balanced the items sequentially until the total cost fell safely above $0.00 but remained below my maximum store credit threshold of $100.00. 
-
-Upon submitting the order, the business logic accepted the manipulated totals, completing the transaction and solving the lab.
+#### Step 4: Finalizing Order Checkout
+Once the overall cart pricing value registered as a valid, positive amount within the boundaries of my available store credit profile, I clicked **Place Order**. The transaction finalized successfully without triggering code security errors, confirming the order delivery.
 
 ---
 
 ### 3. Visual Evidence
 
-#### Application Context & Target:
-![Lab Objective Description](../images/image.png)
-*Figure 1: The target scenario requiring a leather jacket purchase under fixed credit.*
+#### Lab Objective Context:
+![Lab Parameters Summary](../images/lab2-objective.png)
+*Figure 1: The initial challenge parameters requiring the purchase of the leather jacket.*
 
-#### Cart Value Manipulation Strategy:
-![Cart Layout and Manipulated Quantities](../images/image%20(1).png)
-*Figure 2: Manually inserting negative quantity strings to drive down subtotal values.*
+#### Parameter Manipulation via Intercepted Request:
+![Burp Suite Interception and Cart Modification](../images/lab2-intercept-request.png)
+*Figure 2: Intercepting the request in Burp Suite and manually tuning parameters to append negative values.*
 
-#### Successful Exploitation & Lab Completion:
-![Order Finalization Screen](../images/image%20(2).png)
-*Figure 3: Completing checkout with a valid positive balance under the $100 allocation.*
+#### Lab Verification and Success State:
+![Lab Solved Confirmation Banner](../images/lab2-solved-confirmation.png)
+*Figure 3: Confirmation page displaying successful order execution and the solved lab state.*
 
 ---
 
 ### 4. Remediation Strategy
-1. **Strict Input Validation (Whitelisting):** The application backend must validate that all quantity parameters sent by users are strictly positive integers greater than zero before executing database and cart subtotal modifications.
-2. **Server-Side Integrity Checks:** Implement an explicit state check at the server layer right before checkout to verify that individual line item prices and structural values are valid and unmanipulated.
+1. **Server-Side Input Boundary Validation:** Never rely on the client interface to constrain numerical ranges. The backend processing code must strictly enforce a minimum boundary rule checking that any incoming parameter value for quantities is strictly greater than zero (`quantity > 0`).
+2. **Independent Integrity Checks:** Recalculate price fields internally on the secure web server directly from a trusted database ledger rather than factoring absolute math based on raw parameters or negative item offsets passed over public HTTP requests.
