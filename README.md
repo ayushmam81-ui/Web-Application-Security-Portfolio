@@ -61,17 +61,34 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ---
 
-## 4. Core Injection Vectors & Automation (SQLi & XSS)
+## 4. DOM-Based Cross-Site Scripting (DOM XSS)
 
-* **Objective:** Detect and validate server-side and client-side injection surfaces using automated testing frameworks and flow analysis.
+* **Objective:** Analyze client-side JavaScript execution paths to isolate instances where untrusted browser sources transfer malicious data natively into execution sinks without server mediation.
 * **Vulnerabilities Tested:**
-  * **Automated SQL Injection:** Utilized raw HTTP requests inside SQLMap to map backend database schemas, tuning level/risk settings and implementing tamper scripts to bypass firewall filtering.
-  * **DOM-Based XSS:** Traced untrusted user data inputs directly flowing into vulnerable JavaScript execution sinks such as `innerHTML` and `document.write`.
-* **Remediation Implemented:** Enforced context-aware output encoding across all web rendering layers and deployed strictly parameterized queries (prepared statements) for database operations.
+    * **document.write Sink (location.search Source):** Exploited application query parsing constraints by formatting inputs that break out of the target attribute parameter wrapper (`">`) to introduce and execute arbitrary `<script>` elements.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in document.write](labs/dom-xss-document-write.md)
+    * **innerHTML Sink (location.search Source):** Bypassed standard browser script blocking rules inside `innerHTML` elements by injecting an alternative active HTML payload (`<img>`) that forces immediate callback execution via intentional `onerror` vector triggers.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
+    * **jQuery Anchor href Sink (location.search Source):** Traced variable inputs routing directly into link element URL bindings. Manipulated workflow query elements to assign the active parameter directly to an anchor tag's target destination, establishing execution using `javascript:` pseudo-protocols.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-href.md)
+    * **jQuery Selector Sink (hashchange Event):** Targeted structural issues in legacy jQuery framework query logic where string sequences inside hash routing blocks pass directly to internal element selectors (`$()`), allowing runtime tag instantiation and automated trigger generation.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
+* **Root Cause Analysis:** The vulnerabilities exist exclusively within front-end software structures. Trusted UI scripts process untrusted context details acquired from client sources (such as active search parameters or browser address hashes) and populate them unfiltered directly into native browser translation engines.
+* **Remediation Implemented:** Modified component parameters to prioritize secure runtime options (such as substituting `textContent` for dangerous `innerHTML` references) and instituted context-aware data validation frameworks to systematically sterilize dynamic input properties.
 
 ---
 
-## 5. Directory Traversal Filter Evasion
+## 5. Automated Injection Vectors (SQLi & Base XSS)
+
+* **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
+* **Vulnerabilities Tested:**
+  * **Automated SQL Injection:** Utilized raw HTTP request templates inside SQLMap to map database structures, adjusting risk matrices and using specific tamper configurations to evaluate web firewall boundary rules.
+  * **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
+* **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) and mandated explicit encoding rules covering all external web browser output layers.
+
+---
+
+## 6. Directory Traversal Filter Evasion
 
 * **Objective:** Navigate out of restricted application file structures to safely test input verification mechanics.
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
