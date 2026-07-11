@@ -63,13 +63,13 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ## 4. Cross-Site Scripting (XSS) Proficiency
 
-* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users[cite: 2].
+* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users[cite: 1].
     * **Primary Vectors:**
-        * **Reflected XSS:** The malicious script originates from the current HTTP request[cite: 2].
-        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load[cite: 2].
-        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure[cite: 2].
-    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes[cite: 2].
-    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user[cite: 2].
+        * **Reflected XSS:** The malicious script originates from the current HTTP request[cite: 1].
+        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load[cite: 1].
+        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure[cite: 1].
+    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes[cite: 1].
+    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user[cite: 1].
 
 ### Practical Lab Assessments
 
@@ -101,10 +101,13 @@ The attack exploits the trust a web application has in a user's browser, relying
 ## 5. Automated Injection Vectors (SQLi & Base XSS)
 
 * **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
-* **Vulnerabilities Tested:**
-    * **Automated SQL Injection:** Utilized raw HTTP request templates inside SQLMap to map database structures, adjusting risk matrices and using specific tamper configurations to evaluate web firewall boundary rules.
-    * **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
-* **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) and mandated explicit encoding rules covering all external web browser output layers.
+* **SQL Injection (SQLi) Proficiency:**
+    * **Automated Enumeration:** Utilized `sqlmap` to perform database fingerprinting, identify current users/hostnames, and enumerate database schemas[cite: 2].
+    * **Exploitation & Data Extraction:** Mastered flags for targeted data extraction (`-D <db> -T <table> --dump`), handling authentication (`--cookie`), and processing complex requests captured via proxy (`-r file.req`)[cite: 2].
+    * **Advanced Evasion:** Applied tamper scripts (e.g., `space2comment`) to bypass Web Application Firewalls (WAF) and utilized context-aware techniques to minimize noise and avoid triggering rate limits[cite: 2].
+    * **Risk Management:** Strictly adhered to ethical testing boundaries by maintaining low `--risk` levels (1-2) during production-style assessments to prevent unintended data modification[cite: 2].
+* **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
+* **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) to neutralize injection vectors, and mandated explicit encoding rules covering all external web browser output layers[cite: 2].
 
 ---
 
