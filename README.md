@@ -12,19 +12,19 @@ I am a Forensic Science graduate specializing in digital forensics, web applicat
 ## 1. Access Control & Privilege Escalation
 
 *   **Core Concepts**: 
-    *   **Authentication**: Verifies user identity (e.g., username/password)[cite: 4].
-    *   **Session Management**: Identifies users across subsequent HTTP requests, often using unique identification tokens like cookies[cite: 4].
-    *   **Access Control**: Determines whether an authorized user is permitted to perform a specific action[cite: 4].
+    *   **Authentication**: Verifies user identity (e.g., username/password).
+    *   **Session Management**: Identifies users across subsequent HTTP requests, often using unique identification tokens like cookies.
+    *   **Access Control**: Determines whether an authorized user is permitted to perform a specific action.
 *   **Types of Access Controls**:
-    *   **Vertical**: Restricts access based on privilege levels; for example, only administrators should access specific features[cite: 4]. Reliance on "security by obscurity" (e.g., hiding URLs or relying on `robots.txt`) is insufficient as these can be guessed or discovered[cite: 4].
-    *   **Horizontal**: Prevents users of the same privilege level from accessing each other's resources[cite: 4].
-    *   **Context-Dependent**: Restricts access based on the application state or user interaction (e.g., requiring reconfirmation before destructive actions)[cite: 4].
-*   **Broken Access Control**: Occurs when applications fail to properly restrict unauthenticated users, allowing unauthorized viewing, modification, or deletion of content[cite: 4].
+    *   **Vertical**: Restricts access based on privilege levels; for example, only administrators should access specific features. Reliance on "security by obscurity" (e.g., hiding URLs or relying on `robots.txt`) is insufficient as these can be guessed or discovered.
+    *   **Horizontal**: Prevents users of the same privilege level from accessing each other's resources.
+    *   **Context-Dependent**: Restricts access based on the application state or user interaction (e.g., requiring reconfirmation before destructive actions).
+*   **Broken Access Control**: Occurs when applications fail to properly restrict unauthenticated users, allowing unauthorized viewing, modification, or deletion of content.
 *   **Privilege Escalation Patterns**:
-    *   **Horizontal Privilege Escalation**: Attacker accesses resources of another user at the same privilege level, often by exploiting reliance on untrusted client-side inputs (e.g., brute-forcing IDs via proxy)[cite: 4].
-    *   **Vertical Privilege Escalation**: Attacker gains unauthorized access to privileged functionality by modifying parameters (e.g., changing a URL parameter to `admin=true`)[cite: 4].
-    *   **Multi-Step Process Failures**: Vulnerabilities where permissions are validated at steps 1 and 3, but skipped at step 2, allowing attackers to bypass security[cite: 4].
-*   **Impact (CIA Triad)**: Unauthorized access affects **Confidentiality** (accessing other users' data), **Integrity** (updating other users' data), and **Availability** (deleting users)[cite: 4].
+    *   **Horizontal Privilege Escalation**: Attacker accesses resources of another user at the same privilege level, often by exploiting reliance on untrusted client-side inputs (e.g., brute-forcing IDs via proxy).
+    *   **Vertical Privilege Escalation**: Attacker gains unauthorized access to privileged functionality by modifying parameters (e.g., changing a URL parameter to `admin=true`).
+    *   **Multi-Step Process Failures**: Vulnerabilities where permissions are validated at steps 1 and 3, but skipped at step 2, allowing attackers to bypass security.
+*   **Impact (CIA Triad)**: Unauthorized access affects **Confidentiality** (accessing other users' data), **Integrity** (updating other users' data), and **Availability** (deleting users).
 
 ---
 
@@ -82,13 +82,13 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ## 5. Cross-Site Scripting (XSS) Proficiency
 
-* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users[cite: 1].
+* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users.
     * **Primary Vectors:**
-        * **Reflected XSS:** The malicious script originates from the current HTTP request[cite: 1].
-        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load[cite: 1].
-        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure[cite: 1].
-    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes[cite: 1].
-    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user[cite: 1].
+        * **Reflected XSS:** The malicious script originates from the current HTTP request.
+        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load.
+        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure.
+    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes.
+    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user.
 
 ### Practical Lab Assessments
 
@@ -121,12 +121,12 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 * **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
 * **SQL Injection (SQLi) Proficiency:**
-    * **Automated Enumeration:** Utilized `sqlmap` to perform database fingerprinting, identify current users/hostnames, and enumerate database schemas[cite: 2].
-    * **Exploitation & Data Extraction:** Mastered flags for targeted data extraction (`-D <db> -T <table> --dump`), handling authentication (`--cookie`), and processing complex requests captured via proxy (`-r file.req`)[cite: 2].
-    * **Advanced Evasion:** Applied tamper scripts (e.g., `space2comment`) to bypass Web Application Firewalls (WAF) and utilized context-aware techniques to minimize noise and avoid triggering rate limits[cite: 2].
-    * **Risk Management:** Strictly adhered to ethical testing boundaries by maintaining low `--risk` levels (1-2) during production-style assessments to prevent unintended data modification[cite: 2].
+    * **Automated Enumeration:** Utilized `sqlmap` to perform database fingerprinting, identify current users/hostnames, and enumerate database schemas.
+    * **Exploitation & Data Extraction:** Mastered flags for targeted data extraction (`-D <db> -T <table> --dump`), handling authentication (`--cookie`), and processing complex requests captured via proxy (`-r file.req`).
+    * **Advanced Evasion:** Applied tamper scripts (e.g., `space2comment`) to bypass Web Application Firewalls (WAF) and utilized context-aware techniques to minimize noise and avoid triggering rate limits.
+    * **Risk Management:** Strictly adhered to ethical testing boundaries by maintaining low `--risk` levels (1-2) during production-style assessments to prevent unintended data modification.
 * **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
-* **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) to neutralize injection vectors, and mandated explicit encoding rules covering all external web browser output layers[cite: 2].
+* **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) to neutralize injection vectors, and mandated explicit encoding rules covering all external web browser output layers.
 
 ---
 
