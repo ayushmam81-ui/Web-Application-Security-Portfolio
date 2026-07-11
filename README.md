@@ -1,18 +1,13 @@
-# Web-Application-Security-Portfolio
-
-Hands-on vulnerability assessments targeting OWASP Top 10, CSRF, and business logic flaws within staging environments.
-
 # Web Application Security & Vulnerability Assessment Portfolio
 
-
-
-This repository documents hands-on security assessments, exploit mechanics, and defensive remediation strategies conducted within dedicated staging environments. The focus is on analyzing structural software flaws, bypassing weak validation layers, and implementing secure server-side controls.
-
-
+Hands-on vulnerability assessments targeting OWASP Top 10, CSRF, and business logic flaws within staging environments. This repository documents exploit mechanics, root cause analyses, and defensive remediation strategies conducted within dedicated lab environments to analyze structural software flaws and implement secure server-side controls.
 
 ---
 
+## Professional Overview
+I am a Forensic Science graduate specializing in digital forensics, web application security, and threat detection. This portfolio showcases my ability to apply an investigative, evidence-driven approach to map system flaws, bypass weak validation layers, and implement secure software controls across complex vulnerability vectors.
 
+---
 
 ## 1. Cross-Site Request Forgery (CSRF) Analysis
 
@@ -38,11 +33,7 @@ The attack exploits the trust a web application has in a user's browser, relying
 * **Referer/Origin Header Validation:** Verify the HTTP `Referer` or `Origin` headers to ensure requests originate strictly from the application's trusted domain.
 * **Re-authentication:** Force users to re-enter credentials or secondary verification factors before completing critical operations like email or password modifications.
 
-
-
 ---
-
-
 
 ## 2. Business Logic & Parameter Manipulation
 
@@ -59,56 +50,33 @@ The attack exploits the trust a web application has in a user's browser, relying
 * **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data, flawed state parsing, and a total lack of server-side validation regarding numerical boundaries, role mapping, and logical sequence progression.
 * **Remediation Implemented:** Established that all transaction parameters, registration attributes, balances, and logic checks must be hard-validated and calculated exclusively on the server side using strict whitelists and structural constraint matrices.
 
-
 ---
-
-
 
 ## 3. Registration Logic & Access Control Bypass
 
 * **Objective:** Audit role-based access control configurations and entry parameters on administrative panels (`/admin`).
-
 * **Vulnerability Identified:** The web application utilized inconsistent domain string validation during the public profile creation workflow.
-
 * **Exploitation Methodology:** Reverse-engineered conditional checks by embedding a specific corporate domain substring inside a basic testing email field. The weak boundary parser accepted the string, satisfying the validation logic and accidentally granting full administrative access to user-deletion panels.
-
 * **Remediation Implemented:** Enforced a robust server-side domain verification control using strict regular expressions and structural checks, while defaulting to an explicit 'deny-all' stance for privileged paths.
 
-
-
 ---
-
-
 
 ## 4. Core Injection Vectors & Automation (SQLi & XSS)
 
 * **Objective:** Detect and validate server-side and client-side injection surfaces using automated testing frameworks and flow analysis.
-
 * **Vulnerabilities Tested:**
-
   * **Automated SQL Injection:** Utilized raw HTTP requests inside SQLMap to map backend database schemas, tuning level/risk settings and implementing tamper scripts to bypass firewall filtering.
-
   * **DOM-Based XSS:** Traced untrusted user data inputs directly flowing into vulnerable JavaScript execution sinks such as `innerHTML` and `document.write`.
-
 * **Remediation Implemented:** Enforced context-aware output encoding across all web rendering layers and deployed strictly parameterized queries (prepared statements) for database operations.
 
-
-
 ---
-
-
 
 ## 5. Directory Traversal Filter Evasion
 
 * **Objective:** Navigate out of restricted application file structures to safely test input verification mechanics.
-
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
-
 * **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns (`....//`), and double-URL encoding to bypass perimeter sanitization code.
-
 * **Remediation Implemented:** Avoided passing direct input variables into file-system APIs, shifting instead to a hard whitelisting framework for file extensions and directory paths.
-
-
 
 ---
 
