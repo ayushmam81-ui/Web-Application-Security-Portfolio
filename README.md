@@ -70,12 +70,11 @@ The attack exploits the trust a web application has in a user's browser, relying
     * **innerHTML Sink (location.search Source):** Bypassed standard browser script blocking rules inside `innerHTML` elements by injecting an alternative active HTML payload (`<img>`) that forces immediate callback execution via intentional `onerror` vector triggers.
         * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
     * **jQuery Anchor href Sink (location.search Source):** Traced variable inputs routing directly into link element URL bindings. Manipulated workflow query elements to assign the active parameter directly to an anchor tag's target destination, establishing execution using `javascript:` pseudo-protocols.
-        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-href.md)
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-anchor.md)
     * **jQuery Selector Sink (hashchange Event):** Targeted structural issues in legacy jQuery framework query logic where string sequences inside hash routing blocks pass directly to internal element selectors (`$()`), allowing runtime tag instantiation and automated trigger generation.
         * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
 * **Root Cause Analysis:** The vulnerabilities exist exclusively within front-end software structures. Trusted UI scripts process untrusted context details acquired from client sources (such as active search parameters or browser address hashes) and populate them unfiltered directly into native browser translation engines.
 * **Remediation Implemented:** Modified component parameters to prioritize secure runtime options (such as substituting `textContent` for dangerous `innerHTML` references) and instituted context-aware data validation frameworks to systematically sterilize dynamic input properties.
-
 ---
 
 ## 5. Automated Injection Vectors (SQLi & Base XSS)
