@@ -61,37 +61,44 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ---
 
-## 4. DOM-Based Cross-Site Scripting (DOM XSS)
+## 4. Cross-Site Scripting (XSS) Proficiency
 
-* **Objective:** Analyze client-side JavaScript execution paths to isolate instances where untrusted browser sources transfer malicious data natively into execution sinks without server mediation.
-* **Vulnerabilities Tested:**
-    * **document.write Sink (location.search Source):** Exploited application query parsing constraints by formatting inputs that break out of the target attribute parameter wrapper (`">`) to introduce and execute arbitrary `<script>` elements.
-        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in document.write](labs/dom-xss-document-write.md)
-    * **innerHTML Sink (location.search Source):** Bypassed standard browser script blocking rules inside `innerHTML` elements by injecting an alternative active HTML payload (`<img>`) that forces immediate callback execution via intentional `onerror` vector triggers.
-        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
-    * **jQuery Anchor href Sink (location.search Source):** Traced variable inputs routing directly into link element URL bindings. Manipulated workflow query elements to assign the active parameter directly to an anchor tag's target destination, establishing execution using `javascript:` pseudo-protocols.
-        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-anchor.md)
-    * **jQuery Selector Sink (hashchange Event):** Targeted structural issues in legacy jQuery framework query logic where string sequences inside hash routing blocks pass directly to internal element selectors (`$()`), allowing runtime tag instantiation and automated trigger generation.
-        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
-* **Root Cause Analysis:** The vulnerabilities exist exclusively within front-end software structures. Trusted UI scripts process untrusted context details acquired from client sources (such as active search parameters or browser address hashes) and populate them unfiltered directly into native browser translation engines.
-* **Remediation Implemented:** Modified component parameters to prioritize secure runtime options (such as substituting `textContent` for dangerous `innerHTML` references) and instituted context-aware data validation frameworks to systematically sterilize dynamic input properties.
+* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users[cite: 2].
+    * **Primary Vectors:**
+        * **Reflected XSS:** The malicious script originates from the current HTTP request[cite: 2].
+        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load[cite: 2].
+        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure[cite: 2].
+    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes[cite: 2].
+    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user[cite: 2].
 
----
+### Practical Lab Assessments
 
-## 5. Stored/Persistent Cross-Site Scripting (Stored XSS)
+#### A. DOM-Based Cross-Site Scripting (DOM XSS)
+* **Objective:** Analyze client-side JavaScript execution paths to isolate instances where untrusted browser sources transfer malicious data natively into execution sinks.
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in document.write](labs/dom-xss-document-write.md)
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-anchor.md)
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
 
+#### B. Stored/Persistent Cross-Site Scripting (Stored XSS)
 * **Objective:** Analyze application functions that permanently save user-supplied data to the server database to identify vectors where malicious scripts are served to subsequent visitors without adequate validation.
-* **Vulnerabilities Tested:**
-    * **Stored XSS into HTML Context:** Evaluated comment submission entry points for inadequate input filtering. Exploited the application's failure to encode HTML tags by injecting an `<img>` vector that triggered execution upon page render.
-        * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into HTML Context](labs/stored-xss-html-context.md)
-    * **Stored XSS into Anchor href Attribute:** Analyzed the persistence of data within dynamic URL bindings. Exploited the 'Website' input field by injecting `javascript:` pseudo-protocols that bypassed sanitization and executed in the user's browser upon interacting with the author link.
-        * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into Anchor href Attribute](labs/stored-xss-anchor-href.md)
-* **Root Cause Analysis:** These vulnerabilities occur when server-side applications trust user input from persistent sources (like comment sections) and render that data back to other users without rigorous output encoding or input validation.
-* **Remediation Implemented:** Enforced mandatory server-side HTML entity encoding for all rendered user data and implemented protocol whitelisting for all link-based input fields.
+    * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into HTML Context](labs/stored-xss-html-context.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into Anchor href Attribute](labs/stored-xss-anchor-href.md)
+
+#### C. Reflected Cross-Site Scripting (Reflected XSS)
+* **Objective:** Investigate how malicious scripts are injected into HTTP requests and reflected back by the application, specifically focusing on bypassing Web Application Firewalls (WAFs) and restrictive tag-filtering policies.
+    * 📄 [View Lab: Basic Reflected XSS](labs/reflected-xss-html-context.md)
+    * 📄 [View Lab: Reflected XSS into Attribute](labs/reflected-xss-attribute-context.md)
+    * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
+    * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
+    * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
+    * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
+
+* **Root Cause & Remediation:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. Remediation involves a "Defense in Depth" strategy: strict, context-aware output encoding, Content Security Policies (CSP) to restrict script sources, and whitelist-based input validation.
 
 ---
 
-## 6. Automated Injection Vectors (SQLi & Base XSS)
+## 5. Automated Injection Vectors (SQLi & Base XSS)
 
 * **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
 * **Vulnerabilities Tested:**
@@ -101,30 +108,12 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ---
 
-## 7. Directory Traversal Filter Evasion
+## 6. Directory Traversal Filter Evasion
 
 * **Objective:** Navigate out of restricted application file structures to safely test input verification mechanics.
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
 * **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns (`....//`), and double-URL encoding to bypass perimeter sanitization code.
 * **Remediation Implemented:** Avoided passing direct input variables into file-system APIs, shifting instead to a hard whitelisting framework for file extensions and directory paths.
-
----
-
-## 8. Reflected Cross-Site Scripting (Reflected XSS)
-
-* **Objective:** Investigate how malicious scripts are injected into HTTP requests and reflected back by the application, specifically focusing on bypassing Web Application Firewalls (WAFs) and restrictive tag-filtering policies.
-* **Vulnerabilities Tested:**
-    * **Basic Reflected XSS & Attribute Injection:** Audited search and parameter fields to identify injection points where input was rendered without encoding.
-        * 📄 [View Lab: Basic Reflected XSS](labs/reflected-xss-html-context.md)
-        * 📄 [View Lab: Reflected XSS into Attribute](labs/reflected-xss-attribute-context.md)
-    * **JavaScript String & SVG Markup Exploitation:** Analyzed injection within JavaScript strings and evaluated the security implications of allowing partial SVG markup.
-        * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
-        * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
-    * **WAF Bypass & Custom Tag Injection:** Executed advanced filter evasion techniques by using Burp Suite Intruder to identify non-blocked tags and custom tags in environments with stringent WAFs.
-        * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
-        * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
-* **Root Cause Analysis:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. 
-* **Remediation Implemented:** Shifted from reliance on fragile WAF filters to a "Defense in Depth" strategy, mandating strict, context-aware output encoding, Content Security Policies (CSP) to restrict script sources, and whitelist-based input validation.
 
 ---
 
