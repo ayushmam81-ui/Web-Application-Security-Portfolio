@@ -75,9 +75,23 @@ The attack exploits the trust a web application has in a user's browser, relying
         * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
 * **Root Cause Analysis:** The vulnerabilities exist exclusively within front-end software structures. Trusted UI scripts process untrusted context details acquired from client sources (such as active search parameters or browser address hashes) and populate them unfiltered directly into native browser translation engines.
 * **Remediation Implemented:** Modified component parameters to prioritize secure runtime options (such as substituting `textContent` for dangerous `innerHTML` references) and instituted context-aware data validation frameworks to systematically sterilize dynamic input properties.
+
 ---
 
-## 5. Automated Injection Vectors (SQLi & Base XSS)
+## 5. Stored/Persistent Cross-Site Scripting (Stored XSS)
+
+* **Objective:** Analyze application functions that permanently save user-supplied data to the server database to identify vectors where malicious scripts are served to subsequent visitors without adequate validation.
+* **Vulnerabilities Tested:**
+    * **Stored XSS into HTML Context:** Evaluated comment submission entry points for inadequate input filtering. Exploited the application's failure to encode HTML tags by injecting an `<img>` vector that triggered execution upon page render.
+        * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into HTML Context](labs/stored-xss-html-context.md)
+    * **Stored XSS into Anchor href Attribute:** Analyzed the persistence of data within dynamic URL bindings. Exploited the 'Website' input field by injecting `javascript:` pseudo-protocols that bypassed sanitization and executed in the user's browser upon interacting with the author link.
+        * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into Anchor href Attribute](labs/stored-xss-anchor-href.md)
+* **Root Cause Analysis:** These vulnerabilities occur when server-side applications trust user input from persistent sources (like comment sections) and render that data back to other users without rigorous output encoding or input validation.
+* **Remediation Implemented:** Enforced mandatory server-side HTML entity encoding for all rendered user data and implemented protocol whitelisting for all link-based input fields.
+
+---
+
+## 6. Automated Injection Vectors (SQLi & Base XSS)
 
 * **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
 * **Vulnerabilities Tested:**
@@ -87,7 +101,7 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ---
 
-## 6. Directory Traversal Filter Evasion
+## 7. Directory Traversal Filter Evasion
 
 * **Objective:** Navigate out of restricted application file structures to safely test input verification mechanics.
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
