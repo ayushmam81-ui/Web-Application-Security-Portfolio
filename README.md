@@ -1,4 +1,3 @@
-```markdown
 # Web Application Security & Vulnerability Assessment Portfolio
 
 Hands-on vulnerability assessments targeting OWASP Top 10, CSRF, and business logic flaws within staging environments. This repository documents exploit mechanics, root cause analyses, and defensive remediation strategies conducted within dedicated lab environments to analyze structural software flaws and implement secure server-side controls.
