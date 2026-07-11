@@ -120,8 +120,8 @@ The attack exploits the trust a web application has in a user's browser, relying
     * **JavaScript String & SVG Markup Exploitation:** Analyzed injection within JavaScript strings and evaluated the security implications of allowing partial SVG markup.
         * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
         * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
-            * ![Objective](../images/reflected_xss_svg_objective.png)
-            * ![Payload](../images/reflected_xss_svg_payload.png)
+            * ![Objective](images/reflected_xss_svg_objective.png)
+            * ![Payload](images/reflected_xss_svg_payload.png)
     * **WAF Bypass & Custom Tag Injection:** Executed advanced filter evasion techniques by using Burp Suite Intruder to identify non-blocked tags and custom tags in environments with stringent WAFs.
         * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
         * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
