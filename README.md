@@ -1,3 +1,4 @@
+```markdown
 # Web Application Security & Vulnerability Assessment Portfolio
 
 Hands-on vulnerability assessments targeting OWASP Top 10, CSRF, and business logic flaws within staging environments. This repository documents exploit mechanics, root cause analyses, and defensive remediation strategies conducted within dedicated lab environments to analyze structural software flaws and implement secure server-side controls.
@@ -9,73 +10,136 @@ I am a Forensic Science graduate specializing in digital forensics, web applicat
 
 ---
 
-## 1. Access Control & Privilege Escalation Fundamentals
+## 1. Access Control & Privilege Escalation
 
-* **Core Definitions:**
-    * **Authentication:** Verifies user identity via credentials[cite: 3].
-    * **Session Management:** Maintains identity across HTTP requests via unique tokens[cite: 3].
-    * **Access Control:** Determines if a user is permitted to perform a specific action[cite: 3].
-* **Vulnerability Patterns:**
-    * **Vertical Privilege Escalation:** Attacker gains unauthorized access to privileged functionality (e.g., admin panels)[cite: 3].
-    * **Horizontal Privilege Escalation:** Attacker gains access to resources belonging to another user at the same privilege level[cite: 3].
-    * **Context-Dependent Failures:** Vulnerabilities in multi-step processes where permissions are not verified at every individual stage[cite: 3].
-* **Remediation:** Implement strict server-side authorization checks at every step, abandon "security by obscurity," and ensure access decisions are never based on client-controlled parameters[cite: 3].
+*   **Core Concepts**: 
+    *   **Authentication**: Verifies user identity (e.g., username/password)[cite: 4].
+    *   **Session Management**: Identifies users across subsequent HTTP requests, often using unique identification tokens like cookies[cite: 4].
+    *   **Access Control**: Determines whether an authorized user is permitted to perform a specific action[cite: 4].
+*   **Types of Access Controls**:
+    *   **Vertical**: Restricts access based on privilege levels; for example, only administrators should access specific features[cite: 4]. Reliance on "security by obscurity" (e.g., hiding URLs or relying on `robots.txt`) is insufficient as these can be guessed or discovered[cite: 4].
+    *   **Horizontal**: Prevents users of the same privilege level from accessing each other's resources[cite: 4].
+    *   **Context-Dependent**: Restricts access based on the application state or user interaction (e.g., requiring reconfirmation before destructive actions)[cite: 4].
+*   **Broken Access Control**: Occurs when applications fail to properly restrict unauthenticated users, allowing unauthorized viewing, modification, or deletion of content[cite: 4].
+*   **Privilege Escalation Patterns**:
+    *   **Horizontal Privilege Escalation**: Attacker accesses resources of another user at the same privilege level, often by exploiting reliance on untrusted client-side inputs (e.g., brute-forcing IDs via proxy)[cite: 4].
+    *   **Vertical Privilege Escalation**: Attacker gains unauthorized access to privileged functionality by modifying parameters (e.g., changing a URL parameter to `admin=true`)[cite: 4].
+    *   **Multi-Step Process Failures**: Vulnerabilities where permissions are validated at steps 1 and 3, but skipped at step 2, allowing attackers to bypass security[cite: 4].
+*   **Impact (CIA Triad)**: Unauthorized access affects **Confidentiality** (accessing other users' data), **Integrity** (updating other users' data), and **Availability** (deleting users)[cite: 4].
 
 ---
 
 ## 2. Cross-Site Request Forgery (CSRF) Analysis
 
 * **Objective:** Audit session-handling mechanics to identify state-changing actions vulnerable to cross-site request hijacking.
-* **Defense & Remediation Framework:**
-    * **CSRF Tokens:** Implement unique, secret, and unpredictable tokens validated by the server[cite: 3].
-    * **SameSite Cookie Attributes:** Configure cookies with `SameSite=Lax` or `Strict` to block cross-site attachment[cite: 3].
-    * **Header Validation:** Verify HTTP `Referer` or `Origin` headers[cite: 3].
-    * **Re-authentication:** Force re-authentication for sensitive operations[cite: 3].
+* **Vulnerability Identified:** The application relied exclusively on automated, cookie-based sessions for identity validation without integrating unpredictable server-side verification factors.
+
+### Attack Mechanics & Conditions
+The attack exploits the trust a web application has in a user's browser, relying on three key conditions: a state-changing action, cookie-based session handling, and a lack of unpredictable parameters in the request. The execution involves three main actors:
+1. **The Victim:** Authenticated into the vulnerable web application (`bank.com`) with an active session cookie.
+2. **The Attacker:** Hosts a malicious page (`attacker.com`) containing hidden forms or auto-submitting elements.
+3. **The Target Application:** Trusts incoming requests containing valid session cookies.
+
+### Execution Steps
+1. **Session Establishment:** The victim logs into the target site and receives a valid session cookie.
+2. **Malicious Interaction:** The victim visits the attacker-controlled site while remaining authenticated to the target site.
+3. **Request Forgery:** The malicious page automatically triggers a forged request (e.g., via a hidden form or image tag) targeting sensitive actions on the application.
+4. **Implicit Cookie Inclusion:** The victim's browser automatically appends the active session cookies to the cross-site request.
+5. **Unauthorized Execution:** The server processes the request as legitimate because it cannot differentiate between user-intended actions and cross-site forgery.
+
+### Defense & Remediation Framework
+* **CSRF Tokens:** Implement unique, secret, and unpredictable tokens generated by the server per user session. The server must validate this token inside hidden form fields or request headers before executing any state-changing action.
+* **SameSite Cookie Attributes:** Configure session cookies with `SameSite=Lax` or `SameSite=Strict` attributes to systematically block the browser from attaching cookies during cross-site requests.
+* **Referer/Origin Header Validation:** Verify the HTTP `Referer` or `Origin` headers to ensure requests originate strictly from the application's trusted domain.
+* **Re-authentication:** Force users to re-enter credentials or secondary verification factors before completing critical operations like email or password modifications.
 
 ---
 
 ## 3. Business Logic & Parameter Manipulation
 
-* **Objective:** Evaluate multi-step e-commerce workflows to ensure financial and logical constraints are strictly enforced at the server layer.
-* **Vulnerabilities Assessed:**
-    * **Price Manipulation:** Testing interception of API POST requests to alter client-side price parameters.
-    * **Boundary Value Injection:** Using negative integers in quantity fields to offset total order values.
-    * **Inconsistent Security Controls:** Exploiting loose parameter validation to escalate privileges.
-    * **Workflow Rule Stacking:** Bypassing promotional limits by manipulating discount code sequences.
-* **Remediation:** All transaction parameters and logic checks are calculated and validated exclusively on the server side using structural constraint matrices.
+* **Objective:** Evaluate multi-step e-commerce workflows and registration mechanics to ensure financial constraints, access states, and business rules are strictly enforced at the server layer.
+* **Vulnerabilities Tested:**
+    * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter.
+        * 📄 [View Step-by-Step Lab Write-Up: Excessive Trust in Client-Side Controls](labs/excessive-trust-client-controls.md)
+    * **Boundary Value Injection (Negative Quantities):** Injected negative integers into shopping cart quantity fields to artificially subtract balances and offset the total order value.
+        * 📄 [View Step-by-Step Lab Write-Up: High-Level Logic Vulnerabilities](labs/high-level-logic-vulnerabilities.md)
+    * **Inconsistent Security Controls:** Exploited loose registration parameter validation filters via substring domain matching to escalate privileges and access restricted administrative directories.
+        * 📄 [View Step-by-Step Lab Write-Up: Inconsistent Security Controls](labs/inconsistent-security-controls.md)
+    * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
+        * 📄 [View Step-by-Step Lab Write-Up: Flawed Enforcement of Business Rules](labs/flawed-enforcement-of-business-rules.md)
+* **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data, flawed state parsing, and a total lack of server-side validation regarding numerical boundaries, role mapping, and logical sequence progression.
+* **Remediation Implemented:** Established that all transaction parameters, registration attributes, balances, and logic checks must be hard-validated and calculated exclusively on the server side using strict whitelists and structural constraint matrices.
 
 ---
 
-## 4. Cross-Site Scripting (XSS) Proficiency
+## 4. Registration Logic & Access Control Bypass
 
-* **Theoretical Foundations:** XSS enables the injection of malicious scripts into web pages viewed by other users[cite: 1].
-    * **Primary Vectors:** Reflected, Stored, and DOM-based XSS[cite: 1].
-    * **Impact:** Bypass of same-origin policies, session data theft, and unauthorized user actions[cite: 1].
-* **Practical Lab Assessments:**
-    * **DOM-Based XSS:** Analysis of client-side execution paths including `document.write`, `innerHTML`, and jQuery selectors.
-    * **Stored XSS:** Auditing database-persistent input vectors in HTML and attribute contexts.
-    * **Reflected XSS:** Testing WAF bypasses, custom tag injection, and SVG markup filtering.
-* **Remediation:** Enforce context-aware output encoding and strict Content Security Policies (CSP).
+* **Objective:** Audit role-based access control configurations and entry parameters on administrative panels (`/admin`).
+* **Vulnerability Identified:** The web application utilized inconsistent domain string validation during the public profile creation workflow.
+* **Exploitation Methodology:** Reverse-engineered conditional checks by embedding a specific corporate domain substring inside a basic testing email field. The weak boundary parser accepted the string, satisfying the validation logic and accidentally granting full administrative access to user-deletion panels.
+* **Remediation Implemented:** Enforced a robust server-side domain verification control using strict regular expressions and structural checks, while defaulting to an explicit 'deny-all' stance for privileged paths.
 
 ---
 
-## 5. Automated Injection Vectors (SQLi)
+## 5. Cross-Site Scripting (XSS) Proficiency
 
-* **Objective:** Detect and validate server-side databases using automated security frameworks.
+* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users[cite: 1].
+    * **Primary Vectors:**
+        * **Reflected XSS:** The malicious script originates from the current HTTP request[cite: 1].
+        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load[cite: 1].
+        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure[cite: 1].
+    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes[cite: 1].
+    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user[cite: 1].
+
+### Practical Lab Assessments
+
+#### A. DOM-Based Cross-Site Scripting (DOM XSS)
+* **Objective:** Analyze client-side JavaScript execution paths to isolate instances where untrusted browser sources transfer malicious data natively into execution sinks.
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in document.write](labs/dom-xss-document-write.md)
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-anchor.md)
+    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
+
+#### B. Stored/Persistent Cross-Site Scripting (Stored XSS)
+* **Objective:** Analyze application functions that permanently save user-supplied data to the server database to identify vectors where malicious scripts are served to subsequent visitors without adequate validation.
+    * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into HTML Context](labs/stored-xss-html-context.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into Anchor href Attribute](labs/stored-xss-anchor-href.md)
+
+#### C. Reflected Cross-Site Scripting (Reflected XSS)
+* **Objective:** Investigate how malicious scripts are injected into HTTP requests and reflected back by the application, specifically focusing on bypassing Web Application Firewalls (WAFs) and restrictive tag-filtering policies.
+    * 📄 [View Lab: Basic Reflected XSS](labs/reflected-xss-html-context.md)
+    * 📄 [View Lab: Reflected XSS into Attribute](labs/reflected-xss-attribute-context.md)
+    * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
+    * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
+    * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
+    * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
+
+* **Root Cause & Remediation:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. Remediation involves a "Defense in Depth" strategy: strict, context-aware output encoding, Content Security Policies (CSP) to restrict script sources, and whitelist-based input validation.
+
+---
+
+## 6. Automated Injection Vectors (SQLi & Base XSS)
+
+* **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
 * **SQL Injection (SQLi) Proficiency:**
-    * **Automated Enumeration:** Fingerprinting databases, identifying current users, and enumerating schemas using `sqlmap`[cite: 2].
-    * **Advanced Evasion:** Utilizing tamper scripts (e.g., `space2comment`) to bypass Web Application Firewalls[cite: 2].
-    * **Risk Management:** Maintaining low `--risk` levels during production-style assessments to prevent unintended data modification[cite: 2].
-* **Remediation:** Deploying parameterized prepared statements to neutralize injection vectors[cite: 2].
+    * **Automated Enumeration:** Utilized `sqlmap` to perform database fingerprinting, identify current users/hostnames, and enumerate database schemas[cite: 2].
+    * **Exploitation & Data Extraction:** Mastered flags for targeted data extraction (`-D <db> -T <table> --dump`), handling authentication (`--cookie`), and processing complex requests captured via proxy (`-r file.req`)[cite: 2].
+    * **Advanced Evasion:** Applied tamper scripts (e.g., `space2comment`) to bypass Web Application Firewalls (WAF) and utilized context-aware techniques to minimize noise and avoid triggering rate limits[cite: 2].
+    * **Risk Management:** Strictly adhered to ethical testing boundaries by maintaining low `--risk` levels (1-2) during production-style assessments to prevent unintended data modification[cite: 2].
+* **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
+* **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) to neutralize injection vectors, and mandated explicit encoding rules covering all external web browser output layers[cite: 2].
 
 ---
 
-## 6. Directory Traversal Filter Evasion
+## 7. Directory Traversal Filter Evasion
 
-* **Objective:** Navigate out of restricted application file structures to test input verification.
-* **Exploitation:** Implemented traversal patterns (`....//`) and double-URL encoding to bypass perimeter sanitization.
-* **Remediation:** Shifted to a hard whitelisting framework for file extensions and directory paths, avoiding direct input in file-system APIs.
+* **Objective:** Navigate out of restricted application file structures to safely test input verification mechanics.
+* **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
+* **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns (`....//`), and double-URL encoding to bypass perimeter sanitization code.
+* **Remediation Implemented:** Avoided passing direct input variables into file-system APIs, shifting instead to a hard whitelisting framework for file extensions and directory paths.
 
 ---
 
 *Note: All assessments and testing procedures contained in this repository were executed safely within isolated, educational lab environments to research protocol vulnerabilities and structural software defense.*
+
+```
