@@ -6,11 +6,24 @@ This repository documents hands-on security assessments, exploit mechanics, and 
 
 ---
 
-## 1. Cross-Site Request Forgery (CSRF) Analysis
-* **Objective:** Audit session-handling mechanics to identify state-changing actions vulnerable to cross-site request hijacking.
-* **Vulnerability Identified:** The application relied exclusively on automated, cookie-based sessions for identity validation without integrating unpredictable server-side verification factors.
-* **Exploitation Methodology:** Simulated an attacker-controlled site hosting an auto-submitting HTML form targeting the application's sensitive profile endpoints. When an authenticated user visited the malicious page, the browser implicitly appended active session cookies, forcing unauthorized execution.
-* **Remediation Implemented:** Designed secure remediation guidelines requiring unique, unpredictable anti-CSRF tokens for all state-changing operations and configuring browser cookie parameters to `SameSite=Lax` or `Strict`.
+# Vulnerability Deep Dive: Cross-Site Request Forgery (CSRF)
+
+## 1. What is Cross-Site Request Forgery?
+Cross-Site Request Forgery (CSRF) is an attack that forces an authenticated end-user to execute unwanted, state-changing actions on a web application. Instead of targeting the web application directly, CSRF exploits the trust a web application inherently places in the user's browser.
+
+*   **The Attacker's Goal:** To trick a victim's browser into sending an unauthorized request (such as changing an email address, updating a password, or transferring funds) to a legitimate website where the user is currently logged in.
+*   **Key Condition:** The attack succeeds because the victim's browser automatically attaches valid session cookies to the forged request.
+
+---
+
+## 2. Attack Mechanics & Execution Flow
+A successful CSRF attack relies on a specific sequence involving the **Victim**, the **Attacker's Site**, and the **Vulnerable Target Application**:
+
+```text
+[ Victim Browser ] ---> (Logs in & receives session cookie) ---> [ Vulnerable Web App ]
+[ Victim Browser ] ---> (Visits Malicious Page) --------------> [ Attacker Site ]
+[ Victim Browser ] <--- (Receives Forged Form/Script) --------- [ Attacker Site ]
+[ Victim Browser ] ---> (Auto-submits request + Cookie) -------> [ Vulnerable Web App ]
 
 ---
 
