@@ -6,41 +6,24 @@ This repository documents hands-on security assessments, exploit mechanics, and 
 
 ---
 
-# Vulnerability Deep Dive: Cross-Site Request Forgery (CSRF)
-
-## 1. What is Cross-Site Request Forgery?
-Cross-Site Request Forgery (CSRF) is an attack that forces an authenticated end-user to execute unwanted, state-changing actions on a web application. Instead of targeting the web application directly, CSRF exploits the trust a web application inherently places in the user's browser.
-
-*   **The Attacker's Goal:** To trick a victim's browser into sending an unauthorized request (such as changing an email address, updating a password, or transferring funds) to a legitimate website where the user is currently logged in.
-*   **Key Condition:** The attack succeeds because the victim's browser automatically attaches valid session cookies to the forged request.
-
----
-
-## 2. Attack Mechanics & Execution Flow
-A successful CSRF attack relies on a specific sequence involving the **Victim**, the **Attacker's Site**, and the **Vulnerable Target Application**:
-
-```text
-[ Victim Browser ] ---> (Logs in & receives session cookie) ---> [ Vulnerable Web App ]
-[ Victim Browser ] ---> (Visits Malicious Page) --------------> [ Attacker Site ]
-[ Victim Browser ] <--- (Receives Forged Form/Script) --------- [ Attacker Site ]
-[ Victim Browser ] ---> (Auto-submits request + Cookie) -------> [ Vulnerable Web App ]
+## 1. Cross-Site Request Forgery (CSRF) Analysis
+* **Objective:** Audit session-handling mechanics to identify state-changing actions vulnerable to cross-site request hijacking.
+* **Vulnerability Identified:** The application relied exclusively on automated, cookie-based sessions for identity validation without integrating unpredictable server-side verification factors.
+* **Exploitation Methodology:** Simulated an attacker-controlled site hosting an auto-submitting HTML form targeting the application's sensitive profile endpoints. When an authenticated user visited the malicious page, the browser implicitly appended active session cookies, forcing unauthorized execution.
+* **Remediation Implemented:** Designed secure remediation guidelines requiring unique, unpredictable anti-CSRF tokens for all state-changing operations and configuring browser cookie parameters to `SameSite=Lax` or `Strict`.
 
 ---
 
 ## 2. Business Logic & Parameter Manipulation
-
-* **Objective:** Evaluate multi-step e-commerce workflows and registration mechanics to ensure financial constraints, access states, and business rules are strictly enforced at the server layer.
+* **Objective:** Evaluate multi-step e-commerce workflows to ensure financial constraints and state rules are strictly enforced at the server layer.
 * **Vulnerabilities Tested:**
-    * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter.
-        * 📄 [View Step-by-Step Lab Write-Up: Excessive Trust in Client-Side Controls](labs/excessive-trust-client-controls.md)
-    * **Boundary Value Injection (Negative Quantities):** Injected negative integers into shopping cart quantity fields to artificially subtract balances and offset the total order value.
-        * 📄 [View Step-by-Step Lab Write-Up: High-Level Logic Vulnerabilities](labs/high-level-logic-vulnerabilities.md)
-    * **Inconsistent Security Controls:** Exploited loose registration parameter validation filters via substring domain matching to escalate privileges and access restricted administrative directories.
-        * 📄 [View Step-by-Step Lab Write-Up: Inconsistent Security Controls](labs/inconsistent-security-controls.md)
-    * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
-        * 📄 [View Step-by-Step Lab Write-Up: Flawed Enforcement of Business Rules](labs/flawed-enforcement-of-business-rules.md)
-* **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data, flawed state parsing, and a total lack of server-side validation regarding numerical boundaries, role mapping, and logical sequence progression.
-* **Remediation Implemented:** Established that all transaction parameters, registration attributes, balances, and logic checks must be hard-validated and calculated exclusively on the server side using strict whitelists and structural constraint matrices.---
+  * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter.
+  * **Boundary Value Injection (Negative Quantities):** Injected negative integers into shopping cart quantity fields to artificially subtract balances and offset the total order value.
+  * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
+* **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data and a total lack of server-side validation regarding numerical boundaries and logical sequence progression.
+* **Remediation Implemented:** Established that all transaction parameters, balances, and logic checks must be hard-validated and calculated exclusively on the server side.
+
+---
 
 ## 3. Registration Logic & Access Control Bypass
 * **Objective:** Audit role-based access control configurations and entry parameters on administrative panels (`/admin`).
