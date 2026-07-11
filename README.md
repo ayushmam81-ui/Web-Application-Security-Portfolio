@@ -32,20 +32,18 @@ This repository documents hands-on security assessments, exploit mechanics, and 
 
 ## 2. Business Logic & Parameter Manipulation
 
-* **Objective:** Evaluate multi-step e-commerce workflows to ensure financial constraints and state rules are strictly enforced at the server layer.
-
+* **Objective:** Evaluate multi-step e-commerce workflows and registration mechanics to ensure financial constraints, access states, and business rules are strictly enforced at the server layer.
 * **Vulnerabilities Tested:**
-
-  * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter.
-
-  * **Boundary Value Injection (Negative Quantities):** Injected negative integers into shopping cart quantity fields to artificially subtract balances and offset the total order value.
-
-  * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
-
-* **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data and a total lack of server-side validation regarding numerical boundaries and logical sequence progression.
-
-* **Remediation Implemented:** Established that all transaction parameters, balances, and logic checks must be hard-validated and calculated exclusively on the server side.
-
+    * **Price Manipulation:** Intercepted API POST requests using an interception proxy (Burp Suite) during add-to-cart operations and altered the client-side price parameter.
+        * 📄 [View Step-by-Step Lab Write-Up: Excessive Trust in Client-Side Controls](labs/excessive-trust-client-controls.md)
+    * **Boundary Value Injection (Negative Quantities):** Injected negative integers into shopping cart quantity fields to artificially subtract balances and offset the total order value.
+        * 📄 [View Step-by-Step Lab Write-Up: High-Level Logic Vulnerabilities](labs/high-level-logic-vulnerabilities.md)
+    * **Inconsistent Security Controls:** Exploited loose registration parameter validation filters via substring domain matching to escalate privileges and access restricted administrative directories.
+        * 📄 [View Step-by-Step Lab Write-Up: Inconsistent Security Controls](labs/inconsistent-security-controls.md)
+    * **Workflow Rule Stacking:** Bypassed single-use promotional limits by alternating distinct discount code parameters sequentially to infinitely stack coupons.
+        * 📄 [View Step-by-Step Lab Write-Up: Flawed Enforcement of Business Rules](labs/flawed-enforcement-of-business-rules.md)
+* **Root Cause Analysis:** The core flaws stemmed from excessive developer trust in client-side data, flawed state parsing, and a total lack of server-side validation regarding numerical boundaries, role mapping, and logical sequence progression.
+* **Remediation Implemented:** Established that all transaction parameters, registration attributes, balances, and logic checks must be hard-validated and calculated exclusively on the server side using strict whitelists and structural constraint matrices.
 
 
 ---
