@@ -114,18 +114,19 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 * **Objective:** Investigate how malicious scripts are injected into HTTP requests and reflected back by the application, specifically focusing on bypassing Web Application Firewalls (WAFs) and restrictive tag-filtering policies.
 * **Vulnerabilities Tested:**
-    * **Basic Reflected XSS & Attribute Injection:** Audited search and parameter fields to identify injection points where input was rendered without encoding, progressing to attribute injection when angle brackets were neutralized.
-        * 📄 [View Step-by-Step Lab Write-Up: Basic Reflected XSS](labs/reflected-xss-basic.md)
-        * 📄 [View Step-by-Step Lab Write-Up: Reflected XSS into Attribute with HTML Encoding](labs/reflected-xss-attribute-injection.md)
-    * **JavaScript String & SVG Markup Exploitation:** Analyzed injection within JavaScript strings and evaluated the security implications of allowing partial SVG markup, identifying ways to break out of string contexts to execute arbitrary code.
-        * 📄 [View Step-by-Step Lab Write-Up: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
-        * 📄 [View Step-by-Step Lab Write-Up: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
-    * **WAF Bypass & Custom Tag Injection:** Executed advanced filter evasion techniques by using Burp Suite Intruder to identify non-blocked tags (such as `<body>`) and custom tags in environments with stringent WAFs.
-        * 📄 [View Step-by-Step Lab Write-Up: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
-        * 📄 [View Step-by-Step Lab Write-Up: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
-* **Root Cause Analysis:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. In restricted environments, the flaw often lies in incomplete blocklists that fail to account for custom tags or obscure event handlers.
+    * **Basic Reflected XSS & Attribute Injection:** Audited search and parameter fields to identify injection points where input was rendered without encoding.
+        * 📄 [View Lab: Basic Reflected XSS](labs/reflected-xss-html-context.md)
+        * 📄 [View Lab: Reflected XSS into Attribute](labs/reflected-xss-attribute-context.md)
+    * **JavaScript String & SVG Markup Exploitation:** Analyzed injection within JavaScript strings and evaluated the security implications of allowing partial SVG markup.
+        * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
+        * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
+            * ![Objective](../images/reflected_xss_svg_objective.png)
+            * ![Payload](../images/reflected_xss_svg_payload.png)
+    * **WAF Bypass & Custom Tag Injection:** Executed advanced filter evasion techniques by using Burp Suite Intruder to identify non-blocked tags and custom tags in environments with stringent WAFs.
+        * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
+        * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
+* **Root Cause Analysis:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. 
 * **Remediation Implemented:** Shifted from reliance on fragile WAF filters to a "Defense in Depth" strategy, mandating strict, context-aware output encoding, Content Security Policies (CSP) to restrict script sources, and whitelist-based input validation.
-
 ---
 
 *Note: All assessments and testing procedures contained in this repository were executed safely within isolated, educational lab environments to research protocol vulnerabilities and structural software defense.*
