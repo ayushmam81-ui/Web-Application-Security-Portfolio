@@ -95,8 +95,8 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 * **Objective:** Detect and validate server-side databases and basic application data flow boundaries using automated security frameworks.
 * **Vulnerabilities Tested:**
-  * **Automated SQL Injection:** Utilized raw HTTP request templates inside SQLMap to map database structures, adjusting risk matrices and using specific tamper configurations to evaluate web firewall boundary rules.
-  * **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
+    * **Automated SQL Injection:** Utilized raw HTTP request templates inside SQLMap to map database structures, adjusting risk matrices and using specific tamper configurations to evaluate web firewall boundary rules.
+    * **Basic XSS Testing Context:** Audited reflection behaviors to evaluate core application field filtering constraints across standard inputs.
 * **Remediation Implemented:** Deployed strictly parameterized structural database operations (prepared statements) and mandated explicit encoding rules covering all external web browser output layers.
 
 ---
@@ -107,6 +107,24 @@ The attack exploits the trust a web application has in a user's browser, relying
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
 * **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns (`....//`), and double-URL encoding to bypass perimeter sanitization code.
 * **Remediation Implemented:** Avoided passing direct input variables into file-system APIs, shifting instead to a hard whitelisting framework for file extensions and directory paths.
+
+---
+
+## 8. Reflected Cross-Site Scripting (Reflected XSS)
+
+* **Objective:** Investigate how malicious scripts are injected into HTTP requests and reflected back by the application, specifically focusing on bypassing Web Application Firewalls (WAFs) and restrictive tag-filtering policies.
+* **Vulnerabilities Tested:**
+    * **Basic Reflected XSS & Attribute Injection:** Audited search and parameter fields to identify injection points where input was rendered without encoding, progressing to attribute injection when angle brackets were neutralized.
+        * 📄 [View Step-by-Step Lab Write-Up: Basic Reflected XSS](labs/reflected-xss-basic.md)
+        * 📄 [View Step-by-Step Lab Write-Up: Reflected XSS into Attribute with HTML Encoding](labs/reflected-xss-attribute-injection.md)
+    * **JavaScript String & SVG Markup Exploitation:** Analyzed injection within JavaScript strings and evaluated the security implications of allowing partial SVG markup, identifying ways to break out of string contexts to execute arbitrary code.
+        * 📄 [View Step-by-Step Lab Write-Up: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
+        * 📄 [View Step-by-Step Lab Write-Up: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
+    * **WAF Bypass & Custom Tag Injection:** Executed advanced filter evasion techniques by using Burp Suite Intruder to identify non-blocked tags (such as `<body>`) and custom tags in environments with stringent WAFs.
+        * 📄 [View Step-by-Step Lab Write-Up: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
+        * 📄 [View Step-by-Step Lab Write-Up: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
+* **Root Cause Analysis:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. In restricted environments, the flaw often lies in incomplete blocklists that fail to account for custom tags or obscure event handlers.
+* **Remediation Implemented:** Shifted from reliance on fragile WAF filters to a "Defense in Depth" strategy, mandating strict, context-aware output encoding, Content Security Policies (CSP) to restrict script sources, and whitelist-based input validation.
 
 ---
 
