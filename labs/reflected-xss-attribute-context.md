@@ -15,17 +15,17 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Reflected Cross-Site Scripting (XSS)
-* **Objective:** Perform a cross-site scripting attack that injects an attribute and calls the `alert` function[cite: 4].
+* **Objective:** Perform a cross-site scripting attack that injects an attribute and calls the `alert` function.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment
-I investigated the search functionality to determine which characters were being sanitized. By testing with an `avatar"` string, I identified that while angle brackets were HTML-encoded, the double-quote (`"`) characters were not[cite: 4].
+I investigated the search functionality to determine which characters were being sanitized. By testing with an `avatar"` string, I identified that while angle brackets were HTML-encoded, the double-quote (`"`) characters were not.
 
 #### Step 2: Exploitation
-Because the application failed to encode double quotes, I was able to break out of the existing attribute context. I injected the following payload into the search bar: `avatar" autofocus onfocus="alert(123)`[cite: 4]. This payload successfully closed the intended attribute, added an `autofocus` attribute, and triggered the `onfocus` event to execute the `alert` function[cite: 4].
+Because the application failed to encode double quotes, I was able to break out of the existing attribute context. I injected the following payload into the search bar: `avatar" autofocus onfocus="alert(123)`. This payload successfully closed the intended attribute, added an `autofocus` attribute, and triggered the `onfocus` event to execute the `alert` function.
 
 ---
 
