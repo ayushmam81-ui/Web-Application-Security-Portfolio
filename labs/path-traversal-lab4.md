@@ -14,15 +14,15 @@ The information, methodologies, and techniques documented in this write-up are i
 
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
-* **Vulnerability Class:** Path Traversal (Directory Traversal) with Encoding Filters[cite: 4]
-* **Objective:** Read restricted files when web servers or input filters automatically clean up or block standard relative traversal sequences (`../`) in URLs[cite: 4].
+* **Vulnerability Class:** Path Traversal (Directory Traversal) with Encoding Filters
+* **Objective:** Read restricted files when web servers or input filters automatically clean up or block standard relative traversal sequences (`../`) in URLs.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment & Identification of Constraints
-* Web servers often automatically clean up or reject dangerous literal inputs like `../` found in URLs and file uploads[cite: 4].
+* Web servers often automatically clean up or reject dangerous literal inputs like `../` found in URLs and file uploads.
 * Standard input filters look for plain-text traversal sequences to prevent path traversal attacks.
 
 #### Step 2: Intercepting and Analyzing the HTTP Traffic
@@ -30,10 +30,10 @@ The information, methodologies, and techniques documented in this write-up are i
 * Identified that encoding characters can disguise the traversal payload so it passes initial filters before being decoded by the server backend.
 
 #### Step 3: Manipulation & Successful Exploitation
-* Applied URL encoding techniques to hide the traversal characters[cite: 4]:
-  * `%2e%2e%2f` as a URL-encoded version of `../`[cite: 4]
-  * `%252e%252e%252f` as a double URL-encoded version[cite: 4]
-* Explored non-standard encodings like `..%c0%af` or `..%ef%bc%8f` to bypass filters that only understand standard speech, allowing the request to slip through to the server backend[cite: 4].
+* Applied URL encoding techniques to hide the traversal characters:
+  * `%2e%2e%2f` as a URL-encoded version of `../`
+  * `%252e%252e%252f` as a double URL-encoded version
+* Explored non-standard encodings like `..%c0%af` or `..%ef%bc%8f` to bypass filters that only understand standard speech, allowing the request to slip through to the server backend.
 
 ---
 
