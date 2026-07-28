@@ -14,24 +14,24 @@ The information, methodologies, and techniques documented in this write-up are i
 
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
-* **Vulnerability Class:** Path Traversal (Directory Traversal) with Filters[cite: 3]
-* **Objective:** Read restricted files when basic traversal sequences are stripped or filtered by utilizing nested traversal sequences[cite: 3].
+* **Vulnerability Class:** Path Traversal (Directory Traversal) with Filters
+* **Objective:** Read restricted files when basic traversal sequences are stripped or filtered by utilizing nested traversal sequences.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment & Identification of Constraints
-* Applications often attempt to block simple traversal attempts by stripping out basic relative sequences (like `../`)[cite: 3].
-* When a system cleans or filters these inputs by removing inner patterns, it can inadvertently leave behind a functional traversal sequence[cite: 3].
+* Applications often attempt to block simple traversal attempts by stripping out basic relative sequences (like `../`).
+* When a system cleans or filters these inputs by removing inner patterns, it can inadvertently leave behind a functional traversal sequence.
 
 #### Step 2: Intercepting and Analyzing the HTTP Traffic
 * Captured the request using Burp Suite to examine how the application processes filtered file parameters.
-* Identified that complex or recursive filters can be bypassed using nested sequences[cite: 3].
+* Identified that complex or recursive filters can be bypassed using nested sequences.
 
 #### Step 3: Manipulation & Successful Exploitation
-* Employed nested traversal sequences such as `....//` or `....\/` as a clever way to sneak past filters[cite: 3].
-* When the application strips the inner traversal patterns, the remaining characters form a valid sequence allowing access to restricted system files[cite: 3].
+* Employed nested traversal sequences such as `....//` or `....\/` as a clever way to sneak past filters.
+* When the application strips the inner traversal patterns, the remaining characters form a valid sequence allowing access to restricted system files.
 
 ---
 
