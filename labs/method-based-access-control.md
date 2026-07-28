@@ -13,9 +13,9 @@ The information, methodologies, and techniques documented in this write-up are i
 ---
 
 ### 1. Target & Scenario
-* **Platform:** PortSwigger Web Security Academy[cite: 6]
-* **Vulnerability Class:** Method-based Access Control Flaws[cite: 6]
-* **Objective:** This lab implements access controls based partly on the HTTP method of requests. You can familiarize yourself with the admin panel by logging in using the credentials `administrator:admin`. To solve the lab, log in using the credentials `wiener:peter` and exploit the flawed access controls to promote yourself to become an administrator[cite: 6].
+* **Platform:** PortSwigger Web Security Academy
+* **Vulnerability Class:** Method-based Access Control Flaws
+* **Objective:** This lab implements access controls based partly on the HTTP method of requests. You can familiarize yourself with the admin panel by logging in using the credentials `administrator:admin`. To solve the lab, log in using the credentials `wiener:peter` and exploit the flawed access controls to promote yourself to become an administrator.
 
 ---
 
@@ -23,15 +23,15 @@ The information, methodologies, and techniques documented in this write-up are i
 
 #### Step 1: Reconnaissance via Administrator Account
 * Logged in using the provided administrative credentials (`administrator:admin`) to examine how the admin panel and role-promotion functions operate.
-* Captured the requests from Burp Suite (`/admin-roles` and `/my-account?id=wiener`), sending them to the Repeater for deeper inspection[cite: 6].
+* Captured the requests from Burp Suite (`/admin-roles` and `/my-account?id=wiener`), sending them to the Repeater for deeper inspection.
 
 #### Step 2: Session Extraction & Request Preparation
-* Logged in as the regular user (`wiener:peter`) and captured the session cookie using Burp Proxy (`/my-account?id=wiener` tab in Repeater)[cite: 6].
-* Analyzed the original `POST /admin-roles` request structure used for privilege promotion before making edits[cite: 6].
+* Logged in as the regular user (`wiener:peter`) and captured the session cookie using Burp Proxy (`/my-account?id=wiener` tab in Repeater).
+* Analyzed the original `POST /admin-roles` request structure used for privilege promotion before making edits.
 
 #### Step 3: Method Modification & Privilege Escalation
-* Switched the request in the Repeater tab from a `POST` method to a `GET` method (`/admin-roles?username=wiener&action=upgrade`)[cite: 6].
-* Replaced the session cookie with the copied `wiener` session value and sent the modified request, successfully circumventing the method-based restriction and promoting the user account to administrator[cite: 6].
+* Switched the request in the Repeater tab from a `POST` method to a `GET` method (`/admin-roles?username=wiener&action=upgrade`).
+* Replaced the session cookie with the copied `wiener` session value and sent the modified request, successfully circumventing the method-based restriction and promoting the user account to administrator.
 
 ---
 
@@ -39,22 +39,22 @@ The information, methodologies, and techniques documented in this write-up are i
 
 #### Lab Execution and Output:
 ![Lab Question and Status](../images/method-lab-solved.png)
-*Figure 1: Lab description demonstrating method-based access control objectives[cite: 6].*
+*Figure 1: Lab description demonstrating method-based access control objectives.*
 
 ![Proxy Traffic - Admin Actions](../images/method-proxy-admin.png)
-*Figure 2: Burp Suite HTTP history capturing admin actions and role modification requests[cite: 6].*
+*Figure 2: Burp Suite HTTP history capturing admin actions and role modification requests.*
 
 ![Proxy Traffic - Wiener Account](../images/method-proxy-wiener.png)
-*Figure 3: Capturing standard user session activity for `wiener` via proxy history[cite: 6].*
+*Figure 3: Capturing standard user session activity for `wiener` via proxy history.*
 
 ![Repeater - Initial Post Request](../images/method-repeater-initial.png)
-*Figure 4: The original `POST /admin-roles` request structure before modification[cite: 6].*
+*Figure 4: The original `POST /admin-roles` request structure before modification.*
 
 ![Repeater - Session Extraction](../images/method-repeater-cookie.png)
-*Figure 5: Extracting the session cookie from the `my-account?id=wiener` tab[cite: 6].*
+*Figure 5: Extracting the session cookie from the `my-account?id=wiener` tab.*
 
 ![Repeater - Modified Get Request](../images/method-repeater-modified.png)
-*Figure 6: Changing the request to a `GET` method with `username=wiener` and the updated session cookie to solve the lab[cite: 6].*
+*Figure 6: Changing the request to a `GET` method with `username=wiener` and the updated session cookie to solve the lab.*
 
 ---
 
