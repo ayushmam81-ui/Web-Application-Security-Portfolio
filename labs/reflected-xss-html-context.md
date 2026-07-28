@@ -15,17 +15,17 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Reflected Cross-Site Scripting (XSS)
-* **Objective:** Perform a cross-site scripting attack that calls the `alert` function[cite: 3].
+* **Objective:** Perform a cross-site scripting attack that calls the `alert` function.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment
-I evaluated the search functionality to check for XSS vulnerabilities. I searched for `<gate` to determine how the application handled the `<` character. By inspecting the page source, I confirmed that the application did not encode the `<` character, rendering it vulnerable to injection[cite: 3].
+I evaluated the search functionality to check for XSS vulnerabilities. I searched for `<gate` to determine how the application handled the `<` character. By inspecting the page source, I confirmed that the application did not encode the `<` character, rendering it vulnerable to injection.
 
 #### Step 2: Exploitation
-To solve the lab, I injected the payload `<svg/onload=alert(123)//` directly into the `search` parameter of the URL. Because the application reflects this input back into the page without sanitization, the browser treated the payload as part of the HTML structure and executed the `alert` function immediately[cite: 3].
+To solve the lab, I injected the payload `<svg/onload=alert(123)//` directly into the `search` parameter of the URL. Because the application reflects this input back into the page without sanitization, the browser treated the payload as part of the HTML structure and executed the `alert` function immediately.
 
 ---
 
@@ -44,4 +44,4 @@ To solve the lab, I injected the payload `<svg/onload=alert(123)//` directly int
 ### 4. Remediation Strategy
 To secure this application against Reflected XSS:
 1. **Output Encoding:** Implement context-aware output encoding. All user-supplied data must be converted into safe HTML entities before being rendered in the browser.
-2. **Input Validation:** While not a complete defense, validating input against a strict allow-list can prevent unauthorized characters from reaching the server[cite: 3].
+2. **Input Validation:** While not a complete defense, validating input against a strict allow-list can prevent unauthorized characters from reaching the server.
