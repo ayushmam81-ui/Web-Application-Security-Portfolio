@@ -211,15 +211,15 @@ The attack exploits the trust a web application has in a user's browser, relying
 ## 8. Insecure Direct Object References (IDOR)
 
 * **Theoretical Foundations**:
-    * **Insecure Direct Object References (IDOR)**: A type of access control vulnerability that arises when an application uses user-supplied input to directly access internal database objects or static files without proper validation[cite: 6].
-    * **Privilege Escalation Vectors**: Most commonly associated with horizontal privilege escalation (accessing other users' data of the same privilege level), but can also arise in relation to vertical privilege escalation (accessing administrative or privileged functions)[cite: 6].
-    * **Exploitation Technique**: Often performed simply by editing or manipulating parameters within the URL (e.g., changing identifiers or predictable static file names)[cite: 6].
+    * **Insecure Direct Object References (IDOR)**: A type of access control vulnerability that arises when an application uses user-supplied input to directly access internal database objects or static files without proper validation.
+    * **Privilege Escalation Vectors**: Most commonly associated with horizontal privilege escalation (accessing other users' data of the same privilege level), but can also arise in relation to vertical privilege escalation (accessing administrative or privileged functions).
+    * **Exploitation Technique**: Often performed simply by editing or manipulating parameters within the URL (e.g., changing identifiers or predictable static file names).
 
 ### Practical Lab Assessments
 
 * **Objective:** Audit object reference mechanisms to ensure robust authorization checks are enforced whenever users attempt to access database entries or static files.
 * **Vulnerability Identified:** Lack of server-side validation and authorization enforcement on direct resource identifiers and predictable file names.
-* **Exploitation Methodology:** Modified URL parameters and sequential file identifiers to bypass access controls and retrieve unauthorized records and chat transcripts[cite: 6].
+* **Exploitation Methodology:** Modified URL parameters and sequential file identifiers to bypass access controls and retrieve unauthorized records and chat transcripts.
 * **Remediation Implemented:** Replaced direct object references with indirect, session-mapped reference maps or enforced rigorous server-side authorization checks verifying that the currently authenticated user owns or has permission to access the requested object.
 ---
 *Note: All assessments and testing procedures contained in this repository were executed safely within isolated, educational lab environments to research protocol vulnerabilities and structural software defense.*
