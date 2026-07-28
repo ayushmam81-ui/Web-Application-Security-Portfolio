@@ -110,7 +110,7 @@ The attack exploits the trust a web application has in a user's browser, relying
 *   **Lab 5: Low-Level Logic Flaw**
     *   **Objective:** Identify and exploit integer overflow or low-level arithmetic boundary conditions within transactional logic workflows.
     *   **Exploitation Methodology:** Evaluated integer state limits and numerical processing boundaries to manipulate total cart amounts past maximum allowable integer thresholds.
-    *   📄 [View Step-by-Step Lab Write-Up: Flawed Enforcement of Business Rules](labs/business-logic-flawed-enforcement.md) 
+    *   📄 [View Step-by-Step Lab Write-Up](labs/business-logic-flawed-enforcement-of-business-rules.md) 
 
 ---
 
