@@ -188,16 +188,27 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ## 7. Directory Traversal Filter Evasion
 
+* **Theoretical Foundations**:
+    * **Path Traversal (Directory Traversal)**: A web security vulnerability that allows attackers to read arbitrary files on the server running an application, such as application code, backend system credentials, and sensitive operating system files (e.g., `/etc/passwd` on Unix-like systems or `win.ini` on Windows).
+    * **Core Navigation**: Uses relative traversal sequences like `../` on Unix or `..\` on Windows to move backward out of specific folders and access unauthorized directories.
+    * **Impact**: Unauthorized read access to sensitive system files, configuration data, and potentially file modification if permissions allow.
+
+* **Common Obstacles & Bypass Techniques**:
+    * **Absolute Path Bypass**: When basic traversal sequences like `../` are blocked, attackers can directly reference files using absolute paths from the filesystem root (e.g., `filename=/etc/passwd`).
+    * **Nested Traversal Sequences**: Utilizing patterns like `....//` which bypass naive filters that strip inner traversal sequences, leaving behind valid paths.
+    * **URL Encoding & Obfuscation**: Encoding characters to bypass server-side cleaning filters (e.g., `%2e%2e%2f` for `../` or double URL encoding like `%252e%252e%252f`).
+
+### Practical Lab Assessments
+
 * **Objective:** Navigate out of restricted application file structures to safely test input verification mechanics.
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
-* **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns (`....//`), and double-URL encoding to bypass perimeter sanitization code.
+* **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns, and double-URL encoding to bypass perimeter sanitization code.
 * **Lab Write-Ups:**
-    * 📄 [View Step-by-Step Lab Write-Up: Reading arbitrary files via path traversal](labs/path-traversal-lab1.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Absolute Path Bypass](labs/path-traversal-lab2.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Nested Traversal Sequence Bypass](labs/path-traversal-lab3.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with URL Encoding Bypass](labs/path-traversal-lab4.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Reading arbitrary files via path traversal](labs/path-traversal-reading-files.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Absolute Path Bypass](labs/path-traversal-absolute-path.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Nested Traversal Sequence Bypass](labs/path-traversal-nested-sequence.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with URL Encoding Bypass](labs/path-traversal-url-encoding.md)
 * **Remediation Implemented:** Avoided passing direct input variables into file-system APIs, shifting instead to a hard whitelisting framework for file extensions and directory paths.
-
 ---
 
 *Note: All assessments and testing procedures contained in this repository were executed safely within isolated, educational lab environments to research protocol vulnerabilities and structural software defense.*
