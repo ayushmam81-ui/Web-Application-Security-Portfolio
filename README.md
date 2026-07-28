@@ -125,39 +125,52 @@ The attack exploits the trust a web application has in a user's browser, relying
 
 ## 5. Cross-Site Scripting (XSS) Proficiency
 
-* **Theoretical Foundations:** XSS is a critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users.
-    * **Primary Vectors:**
-        * **Reflected XSS:** The malicious script originates from the current HTTP request.
-        * **Stored XSS:** The script is persisted within the website's database and served to users upon page load.
-        * **DOM-based XSS:** The vulnerability exists entirely within the client-side code structure.
-    * **Verification Mechanics:** While `alert()` was historically used to prove XSS, modern browser security (e.g., in Chrome) now often requires the `print()` function to bypass restrictions in specific contexts like iframes.
-    * **Impact:** Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user.
+* **Theoretical Foundations**:
+    * **Cross-Site Scripting (XSS)**: A critical web security vulnerability that enables attackers to inject malicious JavaScript into websites viewed by other users.
+    * **Primary Vectors**:
+        * **Reflected XSS**: The malicious script originates from the current HTTP request.
+        * **Stored XSS**: The script is persisted permanently within the website's database or server and served to users upon page load.
+        * **DOM-Based XSS**: The vulnerability exists entirely within client-side code structures, executing locally in the victim's browser without ever sending the payload to the server.
+    * **Verification Mechanics**: While `alert()` was historically used to prove XSS, modern browser security restrictions (such as in Chrome) often require functions like `print()` or `prompt()` to bypass restrictions in specific contexts like iframes.
+    * **Impact**: Exploitation allows attackers to bypass security restrictions like the same-origin policy, masquerade as victim users, steal sensitive session data, or perform unauthorized actions on behalf of the user.
 
 ### Practical Lab Assessments
 
 #### A. DOM-Based Cross-Site Scripting (DOM XSS)
 * **Objective:** Analyze client-side JavaScript execution paths to isolate instances where untrusted browser sources transfer malicious data natively into execution sinks.
-    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in document.write](labs/dom-xss-document-write.md)
-    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
-    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-anchor.md)
-    * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
+* **Labs Tested:**
+    * **DOM XSS in `document.write` sink using source `location.search`**: Injected script payloads via search input parameters handled unsafely by a `document.write` execution sink, using `"><script>alert(1)</script>` to close existing tags and execute code.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in document.write](labs/dom-xss-document-write.md)
+    * **DOM XSS in `innerHTML` sink using source `location.search`**: Explored innerHTML constraints where standard script and SVG tags are restricted, utilizing alternative event handlers like `<img src=x onerror=prompt(1)>`.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in innerHTML](labs/dom-xss-innerhtml.md)
+    * **DOM XSS in jQuery anchor `href` attribute sink using `location.search` source**: Manipulated jQuery code taking data from URLs and assigning it dynamically to anchor elements, using `javascript:` pseudo-protocol payloads.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery href Attribute](labs/dom-xss-jquery-anchor.md)
+    * **DOM XSS in jQuery selector sink using a hashchange event**: Targeted older versions of jQuery where passing HTML elements or payloads to selector functions constructs elements and triggers unintended execution via hash changes.
+        * 📄 [View Step-by-Step Lab Write-Up: DOM XSS in jQuery Selector](labs/dom-xss-jquery-selector.md)
 
 #### B. Stored/Persistent Cross-Site Scripting (Stored XSS)
-* **Objective:** Analyze application functions that permanently save user-supplied data to the server database to identify vectors where malicious scripts are served to subsequent visitors without adequate validation.
-    * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into HTML Context](labs/stored-xss-html-context.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into Anchor href Attribute](labs/stored-xss-anchor-href.md)
+* **Objective:** Audit application functions that permanently save user-supplied data to the server database to identify vectors where malicious scripts are served to subsequent visitors without adequate validation.
+* **Labs Tested:**
+    * **Stored XSS into HTML context with nothing encoded**: Checked comment and name input fields, finding that angle brackets were unencoded in comment parameters, allowing the injection of scripts like `<src/onload=alert(123)//>`.
+        * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into HTML Context](labs/stored-xss-html-context.md)
+    * **Stored XSS into anchor href attribute with double quotes HTML-encoded**: Identified vulnerable website input fields in comment sections where angle brackets were encoded except within specific URI fields, allowing execution via `javascript:alert(123)`.
+        * 📄 [View Step-by-Step Lab Write-Up: Stored XSS into Anchor href Attribute](labs/stored-xss-anchor-href.md)
 
 #### C. Reflected Cross-Site Scripting (Reflected XSS)
 * **Objective:** Investigate how malicious scripts are injected into HTTP requests and reflected back by the application, specifically focusing on bypassing Web Application Firewalls (WAFs) and restrictive tag-filtering policies.
-    * 📄 [View Lab: Basic Reflected XSS](labs/reflected-xss-html-context.md)
-    * 📄 [View Lab: Reflected XSS into Attribute](labs/reflected-xss-attribute-context.md)
-    * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
-    * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
-    * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
-    * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
-
-* **Root Cause & Remediation:** These vulnerabilities arise when applications dynamically generate web pages using untrusted user input without proper context-aware output encoding. Remediation involves a "Defense in Depth" strategy: strict, context-aware output encoding, Content Security Policies (CSP) to restrict script sources, and whitelist-based input validation.
-
+* **Labs Tested:**
+    * **Basic Reflected XSS**: Examined unencoded reflection behavior using search parameters and injected script tags containing custom vectors.
+        * 📄 [View Lab: Basic Reflected XSS](labs/reflected-xss-html-context.md)
+    * **Reflected XSS into attribute with angle brackets HTML-encoded**: Evaluated attribute context reflection and bypassed quote filters using event-handler injections like `avatar" autofocus onfocus="alert(123)`.
+        * 📄 [View Lab: Reflected XSS into Attribute](labs/reflected-xss-attribute-context.md)
+    * **Reflected XSS into a JavaScript string with angle brackets HTML encoded**: Bypassed single-quote constraints inside JavaScript strings to inject code segments cleanly.
+        * 📄 [View Lab: XSS into JavaScript Strings](labs/reflected-xss-js-string.md)
+    * **Reflected XSS with some SVG markup allowed**: Leveraged allowed SVG elements and animation triggers like `<svg><animatetransform onbegin="alert(123)"></animatetransform></svg>`.
+        * 📄 [View Lab: Exploiting Allowed SVG Markup](labs/reflected-xss-svg-markup.md)
+    * **Reflected XSS into HTML context with most tags and attributes blocked**: Utilized Burp Suite Intruder to discover unblocked custom tags and attributes (such as `onbeforeinput`) behind a strict WAF.
+        * 📄 [View Lab: WAF Bypass and Tag Filtering](labs/reflected-xss-waf-bypass.md)
+    * **Reflected XSS into HTML context with all tags blocked except custom ones**: Deployed custom tags wrapped inside `iframe` elements to execute payload strings securely.
+        * 📄 [View Lab: Custom Tag Injection](labs/reflected-xss-custom-tags.md)
 ---
 
 ## 6. Automated Injection Vectors (SQLi & Base XSS)
