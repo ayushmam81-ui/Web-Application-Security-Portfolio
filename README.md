@@ -83,34 +83,34 @@ The attack exploits the trust a web application has in a user's browser, relying
 ## 3. Business Logic & Parameter Manipulation
 
 * **Core Concepts**:
-    * **Business Logic Vulnerabilities**: Flaws in the design and implementation of an application that allow users to perform unintended behaviors, occurring not because code is broken, but because of bad assumptions about user workflows and constraints[cite: 6].
-    * **Common Misassumptions**: Applications often mistakenly assume people will only click buttons in the correct sequence, that users will never attempt to cheat or bypass rules, and that client-side parameters are inherently trustworthy[cite: 6].
-    * **Impact (CIA Triad / Business Risks)**: Allows attackers to obtain items for free, bypass security controls, and unlawfully access resources or other user accounts[cite: 6].
+    * **Business Logic Vulnerabilities**: Flaws in the design and implementation of an application that allow users to perform unintended behaviors, occurring not because code is broken, but because of bad assumptions about user workflows and constraints .
+    * **Common Misassumptions**: Applications often mistakenly assume people will only click buttons in the correct sequence, that users will never attempt to cheat or bypass rules, and that client-side parameters are inherently trustworthy .
+    * **Impact (CIA Triad / Business Risks)**: Allows attackers to obtain items for free, bypass security controls, and unlawfully access resources or other user accounts .
 * **Common Attack Vectors & Patterns**:
     * **Workflow Sequencing Flaws**: Bypassing mandatory application states by executing steps out of order or skipping verification checks until final submission.
     * **Parameter & Boundary Manipulation**: Intercepting and altering numerical parameters, quantities, or financial pricing arrays within client-to-server requests.
 
 ### Practical Lab Assessments
 *   **Lab 1: Excessive Trust in Client-Side Controls**
-    *   **Objective:** Exploit web applications that rely on client-side price variables during financial transactions by intercepting and modifying parameters[cite: 6].
-    *   **Exploitation Methodology:** Authenticated with provided credentials, located the specified product, captured the add-to-cart request using an interception proxy, and altered the price parameter before purchasing the item[cite: 6].
-    *   📄 [View Step-by-Step Lab Write-Up](labs/excessive-trust-client-controls.md)[cite: 1]
+    *   **Objective:** Exploit web applications that rely on client-side price variables during financial transactions by intercepting and modifying parameters .
+    *   **Exploitation Methodology:** Authenticated with provided credentials, located the specified product, captured the add-to-cart request using an interception proxy, and altered the price parameter before purchasing the item .
+    *   📄 [View Step-by-Step Lab Write-Up](labs/excessive-trust-client-controls.md)  
 *   **Lab 2: High-Level Logic Vulnerabilities**
-    *   **Objective:** Bypass purchasing limits and balance restrictions on items by injecting boundary values or negative numbers into shopping cart parameters[cite: 6].
-    *   **Exploitation Methodology:** Logged in with a fixed store balance, searched for the target jacket, and injected negative quantities alongside additional products to offset totals and make the item affordable[cite: 6].
-    *   📄 [View Step-by-Step Lab Write-Up](labs/high-level-logic-vulnerabilities.md)[cite: 1]
+    *   **Objective:** Bypass purchasing limits and balance restrictions on items by injecting boundary values or negative numbers into shopping cart parameters .
+    *   **Exploitation Methodology:** Logged in with a fixed store balance, searched for the target jacket, and injected negative quantities alongside additional products to offset totals and make the item affordable .
+    *   📄 [View Step-by-Step Lab Write-Up](labs/high-level-logic-vulnerabilities.md)  
 *   **Lab 3: Inconsistent Security Controls**
-    *   **Objective:** Access restricted administrative directories by exploiting loose validation checks and inconsistent filtering on user registration fields[cite: 6].
-    *   **Exploitation Methodology:** Attempted to access restricted paths via `/admin`, created a test account using the integrated email client, registered an account containing the required domain substring (`dontwannacry`), and successfully accessed the admin panel to delete `carlos`[cite: 6].
-    *   📄 [View Step-by-Step Lab Write-Up](labs/inconsistent-security-controls.md)[cite: 1]
+    *   **Objective:** Access restricted administrative directories by exploiting loose validation checks and inconsistent filtering on user registration fields .
+    *   **Exploitation Methodology:** Attempted to access restricted paths via `/admin`, created a test account using the integrated email client, registered an account containing the required domain substring (`dontwannacry`), and successfully accessed the admin panel to delete `carlos` .
+    *   📄 [View Step-by-Step Lab Write-Up](labs/inconsistent-security-controls.md)  
 *   **Lab 4: Flawed Enforcement of Business Rules**
-    *   **Objective:** Exploit applications that fail to restrict the reuse or sequencing of promotional discounts and coupon codes[cite: 6].
-    *   **Exploitation Methodology:** Added target items to the cart, applied initial promotional codes found across the user interface, and sequentially alternated multiple discount codes to infinitely stack coupons and bypass single-use promotional limits[cite: 6].
-    *   📄 [View Step-by-Step Lab Write-Up](labs/flawed-enforcement-of-business-rules.md)[cite: 1]
+    *   **Objective:** Exploit applications that fail to restrict the reuse or sequencing of promotional discounts and coupon codes .
+    *   **Exploitation Methodology:** Added target items to the cart, applied initial promotional codes found across the user interface, and sequentially alternated multiple discount codes to infinitely stack coupons and bypass single-use promotional limits .
+    *   📄 [View Step-by-Step Lab Write-Up](labs/flawed-enforcement-of-business-rules.md)  
 *   **Lab 5: Low-Level Logic Flaw**
     *   **Objective:** Identify and exploit integer overflow or low-level arithmetic boundary conditions within transactional logic workflows.
     *   **Exploitation Methodology:** Evaluated integer state limits and numerical processing boundaries to manipulate total cart amounts past maximum allowable integer thresholds.
-    *   📄 [View Step-by-Step Lab Write-Up](labs/low-level-logic-flaw.md)[cite: 1]
+    *   📄 [View Step-by-Step Lab Write-Up](labs/low-level-logic-flaw.md)  
 
 ---
 
