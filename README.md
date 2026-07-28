@@ -201,10 +201,10 @@ The attack exploits the trust a web application has in a user's browser, relying
 * **Vulnerability Identified:** Web application endpoints processed file paths without adequate canonicalization or path sanitization.
 * **Exploitation Methodology:** Implemented filter evasion techniques using absolute path references, nested traversal patterns, and double-URL encoding to bypass perimeter sanitization code.
 * **Lab Write-Ups:**
-    * 📄 [View Step-by-Step Lab Write-Up: Reading arbitrary files via path traversal](labs/path-traversal-reading-files.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Absolute Path Bypass](labs/path-traversal-absolute-path.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Nested Traversal Sequence Bypass](labs/path-traversal-nested-sequence.md)
-    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with URL Encoding Bypass](labs/path-traversal-url-encoding.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Reading arbitrary files via path traversal](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/path-traversal-lab1.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Absolute Path Bypass](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/path-traversal-lab2.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with Nested Traversal Sequence Bypass](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/path-traversal-lab3.md)
+    * 📄 [View Step-by-Step Lab Write-Up: Path Traversal with URL Encoding Bypass](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/path-traversal-lab4.md)
 * **Remediation Implemented:** Avoided passing direct input variables into file-system APIs, shifting instead to a hard whitelisting framework for file extensions and directory paths.
 ---
 
