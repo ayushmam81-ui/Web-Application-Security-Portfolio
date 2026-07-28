@@ -15,20 +15,20 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Stored (Persistent) Cross-Site Scripting (XSS)
-* **Objective:** Submit a comment that executes the `alert` function when the blog post is viewed[cite: 1].
+* **Objective:** Submit a comment that executes the `alert` function when the blog post is viewed.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment & Entry Point Testing
-I evaluated the comment section to identify vulnerable input fields. I tested the available entry points (Name, Email, Website, and Comment) by injecting the `<` character[cite: 1]. 
+I evaluated the comment section to identify vulnerable input fields. I tested the available entry points (Name, Email, Website, and Comment) by injecting the `<` character. 
 
 #### Step 2: Vulnerability Identification
-By inspecting the source code, I observed that the `<` character was encoded in fields like the "Name" entry point, rendering them secure. However, in the "Comment" input field, the `<` character remained unencoded, confirming that this field was vulnerable to HTML injection[cite: 1].
+By inspecting the source code, I observed that the `<` character was encoded in fields like the "Name" entry point, rendering them secure. However, in the "Comment" input field, the `<` character remained unencoded, confirming that this field was vulnerable to HTML injection.
 
 #### Step 3: Exploitation
-To solve the lab, I injected the payload `<svg/onload=alert(123)//` into the comment box and populated the remaining required fields (Name, Email, Website)[cite: 1]. Upon submitting the comment, the malicious script was permanently stored by the server and executed when the page was loaded, successfully triggering the `alert` function[cite: 1].
+To solve the lab, I injected the payload `<svg/onload=alert(123)//` into the comment box and populated the remaining required fields (Name, Email, Website). Upon submitting the comment, the malicious script was permanently stored by the server and executed when the page was loaded, successfully triggering the `alert` function.
 
 ---
 
