@@ -15,17 +15,17 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Reflected Cross-Site Scripting (XSS)
-* **Objective:** Perform a cross-site scripting attack that calls the `alert()` function[cite: 6].
+* **Objective:** Perform a cross-site scripting attack that calls the `alert()` function.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment
-I investigated the application's filter mechanism by searching for `<svg></svg>` to determine if SVG tags were permitted[cite: 6]. The test confirmed that these tags were allowed by the application's filter[cite: 6].
+I investigated the application's filter mechanism by searching for `<svg></svg>` to determine if SVG tags were permitted. The test confirmed that these tags were allowed by the application's filter.
 
 #### Step 2: Exploitation
-Since SVG markup was not blocked, I utilized an `animatetransform` vector to trigger JavaScript execution[cite: 6]. I injected the following payload into the search bar: `<svg><animatetransform onbegin="alert(123)"></animatetransform></svg>`[cite: 6]. This payload successfully bypassed the filters and executed the `alert()` function when the SVG element initialized[cite: 6].
+Since SVG markup was not blocked, I utilized an `animatetransform` vector to trigger JavaScript execution. I injected the following payload into the search bar: `<svg><animatetransform onbegin="alert(123)"></animatetransform></svg>`. This payload successfully bypassed the filters and executed the `alert()` function when the SVG element initialized.
 
 ---
 
