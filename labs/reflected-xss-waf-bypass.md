@@ -15,17 +15,17 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Reflected Cross-Site Scripting (XSS)
-* **Objective:** Bypass a Web Application Firewall (WAF) to execute the `print()` function[cite: 7].
+* **Objective:** Bypass a Web Application Firewall (WAF) to execute the `print()` function.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment
-I tested the search functionality with `<svg/onload=prompt(123)//` and confirmed that the WAF blocked standard tags like `<svg>`[cite: 7]. Using Burp Suite's Intruder, I performed a fuzzing attack using the PortSwigger XSS Cheat Sheet to identify which tags and attributes were permitted[cite: 7]. The results indicated that only specific custom tags and the `<body>` tag were allowed[cite: 7].
+I tested the search functionality with `<svg/onload=prompt(123)//` and confirmed that the WAF blocked standard tags like `<svg>`. Using Burp Suite's Intruder, I performed a fuzzing attack using the PortSwigger XSS Cheat Sheet to identify which tags and attributes were permitted. The results indicated that only specific custom tags and the `<body>` tag were allowed.
 
 #### Step 2: Exploitation
-After confirming the `<body>` tag was not blocked, I used Intruder again to test for allowed event handlers[cite: 7]. I identified that `onbeforeinput`, `onratechange`, and `onresize` were permitted[cite: 7]. Since only one `<body>` tag is allowed in an HTML document, I leveraged the fact that the server effectively merges injected `<body>` attributes into the existing tag[cite: 7]. I successfully triggered the required function by injecting: `<body onbeforeinput="print()">`[cite: 7].
+After confirming the `<body>` tag was not blocked, I used Intruder again to test for allowed event handlers. I identified that `onbeforeinput`, `onratechange`, and `onresize` were permitted. Since only one `<body>` tag is allowed in an HTML document, I leveraged the fact that the server effectively merges injected `<body>` attributes into the existing tag. I successfully triggered the required function by injecting: `<body onbeforeinput="print()">`.
 
 ---
 
