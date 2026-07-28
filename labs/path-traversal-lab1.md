@@ -14,24 +14,24 @@ The information, methodologies, and techniques documented in this write-up are i
 
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
-* **Vulnerability Class:** Path Traversal (Directory Traversal)[cite: 1]
-* **Objective:** Read arbitrary files (specifically `/etc/passwd`) on the server running the application[cite: 1].
+* **Vulnerability Class:** Path Traversal (Directory Traversal)
+* **Objective:** Read arbitrary files (specifically `/etc/passwd`) on the server running the application.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment & Identification of Constraints
-* Identified that images are stored on disk in the location `/var/www/images/`[cite: 1].
-* For example, an application loading an image uses HTML like `<img src="/loadImage?filename=218.png">`, where `218.png` is the file name and the prefix is treated as the base directory path[cite: 1].
+* Identified that images are stored on disk in the location `/var/www/images/`.
+* For example, an application loading an image uses HTML like `<img src="/loadImage?filename=218.png">`, where `218.png` is the file name and the prefix is treated as the base directory path.
 
 #### Step 2: Intercepting and Analyzing the HTTP Traffic
 * Captured the request using Burp Suite to analyze how file parameters are passed to the server via `/image?filename=`.
-* Recognized that relative paths use sequences like `../` to move upward out of the specific room or directory structure[cite: 1].
+* Recognized that relative paths use sequences like `../` to move upward out of the specific room or directory structure.
 
 #### Step 3: Manipulation & Successful Exploitation
-* Modified the `filename` parameter in the request URL using traversal sequences (`../`) to step out of the image directory and access system files[cite: 1].
-* Payload used: `/image?filename=../../../etc/passwd`[cite: 1].
+* Modified the `filename` parameter in the request URL using traversal sequences (`../`) to step out of the image directory and access system files.
+* Payload used: `/image?filename=../../../etc/passwd`.
 
 ---
 
