@@ -15,20 +15,20 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Reflected Cross-Site Scripting (XSS)
-* **Objective:** Perform an XSS attack using a custom tag to automatically alert `document.cookie`[cite: 8].
+* **Objective:** Perform an XSS attack using a custom tag to automatically alert `document.cookie`.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Assessment
-The application blocks all standard HTML tags, permitting only custom tags[cite: 8]. To achieve the objective, I utilized an `<iframe>` to host the exploit, as it allowed for the necessary structure to trigger the XSS payload[cite: 8].
+The application blocks all standard HTML tags, permitting only custom tags. To achieve the objective, I utilized an `<iframe>` to host the exploit, as it allowed for the necessary structure to trigger the XSS payload.
 
 #### Step 2: Exploitation
-I constructed an `<iframe>` that directs the search feature to execute an `onfocus` event handler on a custom tag element[cite: 8]. The final payload utilized was[cite: 8]:
+I constructed an `<iframe>` that directs the search feature to execute an `onfocus` event handler on a custom tag element. The final payload utilized was:
 `<iframe src="https://YOUR-LAB-ID.web-security-academy.net/?search=<catfish+tabindex+1+onfocus=alert(document.cookie)+id=a1>#a1"></iframe>`
 
-By setting `tabindex=1` and appending `#a1` to the URL, the browser automatically focuses on the element with `id=a1`, triggering the `onfocus` event and executing the `alert(document.cookie)` function[cite: 8].
+By setting `tabindex=1` and appending `#a1` to the URL, the browser automatically focuses on the element with `id=a1`, triggering the `onfocus` event and executing the `alert(document.cookie)` function.
 
 ---
 
