@@ -15,20 +15,20 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
 * **Vulnerability Class:** Stored (Persistent) Cross-Site Scripting (XSS)
-* **Objective:** Submit a comment that calls the `alert` function when the comment author's name is clicked[cite: 2].
+* **Objective:** Submit a comment that calls the `alert` function when the comment author's name is clicked.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment & Entry Point Testing
-I analyzed the comment section to locate vulnerable entry points. I tested the fields (comment, name, email, and website) by injecting test strings like `<test1`, `<test2`, and `<test3`[cite: 2].
+I analyzed the comment section to locate vulnerable entry points. I tested the fields (comment, name, email, and website) by injecting test strings like `<test1`, `<test2`, and `<test3`.
 
 #### Step 2: Vulnerability Identification
-By inspecting the application's source code, I determined that most entry points were correctly protected by HTML encoding[cite: 2]. However, the "Website" field was identified as the only entry point that remained vulnerable to injection[cite: 2].
+By inspecting the application's source code, I determined that most entry points were correctly protected by HTML encoding. However, the "Website" field was identified as the only entry point that remained vulnerable to injection.
 
 #### Step 3: Exploitation
-To solve the lab, I injected the payload `javascript:alert(123)` into the "Website" field and populated the remaining fields with dummy data[cite: 2]. Once submitted, clicking the comment author's name triggers the `alert` function, successfully exploiting the stored XSS vulnerability[cite: 2].
+To solve the lab, I injected the payload `javascript:alert(123)` into the "Website" field and populated the remaining fields with dummy data. Once submitted, clicking the comment author's name triggers the `alert` function, successfully exploiting the stored XSS vulnerability.
 
 ---
 
