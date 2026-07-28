@@ -107,10 +107,7 @@ The attack exploits the trust a web application has in a user's browser, relying
     *   **Objective:** Exploit applications that fail to restrict the reuse or sequencing of promotional discounts and coupon codes .
     *   **Exploitation Methodology:** Added target items to the cart, applied initial promotional codes found across the user interface, and sequentially alternated multiple discount codes to infinitely stack coupons and bypass single-use promotional limits .
     *   📄 [View Step-by-Step Lab Write-Up](labs/flawed-enforcement-of-business-rules.md)  
-*   **Lab 5: Low-Level Logic Flaw**
-    *   **Objective:** Identify and exploit integer overflow or low-level arithmetic boundary conditions within transactional logic workflows.
-    *   **Exploitation Methodology:** Evaluated integer state limits and numerical processing boundaries to manipulate total cart amounts past maximum allowable integer thresholds.
-    *   📄 [View Step-by-Step Lab Write-Up](labs/flawed-enforcement-of-business-rules.md) 
+ 
 
 ---
 
