@@ -14,24 +14,24 @@ The information, methodologies, and techniques documented in this write-up are i
 
 ### 1. Target & Scenario
 * **Platform:** PortSwigger Web Security Academy
-* **Vulnerability Class:** Path Traversal (Directory Traversal)[cite: 2]
-* **Objective:** Read arbitrary files on the server when standard relative traversal sequences (`../`) are blocked or modified[cite: 2].
+* **Vulnerability Class:** Path Traversal (Directory Traversal)
+* **Objective:** Read arbitrary files on the server when standard relative traversal sequences (`../`) are blocked or modified.
 
 ---
 
 ### 2. Analysis & Methodology
 
 #### Step 1: Initial Assessment & Identification of Constraints
-* Applications often block simple traversal sequences like `../` as a defense mechanism against path traversal vulnerabilities[cite: 2].
-* When traversal sequences are stripped or blocked, alternative bypass techniques must be evaluated[cite: 2].
+* Applications often block simple traversal sequences like `../` as a defense mechanism against path traversal vulnerabilities.
+* When traversal sequences are stripped or blocked, alternative bypass techniques must be evaluated.
 
 #### Step 2: Intercepting and Analyzing the HTTP Traffic
 * Captured the request using Burp Suite to test input parameters handling file paths.
-* Identified that absolute paths from the file system root can sometimes be used directly to bypass restrictions[cite: 2].
+* Identified that absolute paths from the file system root can sometimes be used directly to bypass restrictions.
 
 #### Step 3: Manipulation & Successful Exploitation
-* Bypassed the need for relative traversal sequences (`../`) by supplying the absolute path from the root directory[cite: 2].
-* Payload used: `/image?filename=/etc/passwd`[cite: 2].
+* Bypassed the need for relative traversal sequences (`../`) by supplying the absolute path from the root directory.
+* Payload used: `/image?filename=/etc/passwd`.
 
 ---
 
@@ -46,4 +46,4 @@ The information, methodologies, and techniques documented in this write-up are i
 ### 4. Remediation Strategy
 To secure the application against absolute path traversal:
 1. **Strict Whitelisting:** Implement a strict whitelist of allowed filenames rather than trusting raw file paths or user input.
-2. **Path Canonicalization:** Resolve and check canonical paths to ensure that any requested file strictly resides within the intended base directory (`/var/www/images/`)[cite: 2].
+2. **Path Canonicalization:** Resolve and check canonical paths to ensure that any requested file strictly resides within the intended base directory (`/var/www/images/`).
