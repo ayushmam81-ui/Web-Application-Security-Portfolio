@@ -26,6 +26,32 @@ I am a Forensic Science graduate specializing in digital forensics, web applicat
     *   **Multi-Step Process Failures**: Vulnerabilities where permissions are validated at steps 1 and 3, but skipped at step 2, allowing attackers to bypass security.
 *   **Impact (CIA Triad)**: Unauthorized access affects **Confidentiality** (accessing other users' data), **Integrity** (updating other users' data), and **Availability** (deleting users).
 
+### Practical Lab Assessments (Vertical Access Control & Bypass Labs)
+*   **Lab 1: Unprotected Admin Functionality (`robots.txt`)**
+    *   **Objective:** Discover hidden administrative paths exposed via search engine crawling directives (`robots.txt`) and access the admin panel to remove target accounts.
+    *   **Exploitation Methodology:** Appended `/robots.txt` to the target URL to review disallowed paths, extracted the hidden administrator panel path, and navigated directly to it to complete administrative functions.
+    *   📄 [View Lab Write-Up Documentation](labs/vertical-access-control-robots.md)
+*   **Lab 2: Hidden URL / Security by Obscurity**
+    *   **Objective:** Locate obfuscated administrator panel links embedded dynamically within client-side application code.
+    *   **Exploitation Methodology:** Inspected page source markup to identify obfuscated function patterns matching internal role checks (`isAdmin`), extracted the generated path suffix following the attribute definition, and used it to access the panel and delete the user `carlos`.
+    *   📄 [View Lab Write-Up Documentation](labs/vertical-access-control-hidden-url.md)
+*   **Lab 3: Admin Privilege from Client-Side Cookies**
+    *   **Objective:** Exploit insecure session storage configurations where user privilege states are tracked directly via mutable cookies.
+    *   **Exploitation Methodology:** Authenticated using standard user credentials (`wiener:peter`), inspected browser cookies, altered the stored privilege parameter value to indicate administrative status (`admin=true`), and accessed administrative routes.
+    *   📄 [View Lab Write-Up Documentation](labs/vertical-access-control-cookies.md)
+*   **Lab 4: User Role Modified in User Profile (`roleid`)**
+    *   **Objective:** Bypass vertical access restrictions by manipulating parameter-based role identifiers during profile update requests.
+    *   **Exploitation Methodology:** Captured the profile update request in Burp Suite, elevated the `roleid` parameter from standard user privileges (`1`) to administrative privileges (`2`), and submitted the modified request to unlock the admin panel and delete `carlos`.
+    *   📄 [View Step-by-Step Lab Write-Up](labs/roleid-parameter-manipulation.md)
+*   **Lab 5: URL-based Access Control Can Be Circumvented (`X-Original-URL`)**
+    *   **Objective:** Circumvent perimeter security filters protecting an unauthenticated administrative panel by abusing framework-level URL-override headers.
+    *   **Exploitation Methodology:** Leveraged the backend framework's support for the `X-Original-URL` header by sending a request to a permitted path while overriding the internal destination header to point to `/admin` and subsequently `/admin/delete?username=carlos`, bypassing front-end blocking logic.
+    *   📄 [View Step-by-Step Lab Write-Up](labs/url-based-access-control-x-original-url.md)
+*   **Lab 6: Method-based Access Control Can Be Circumvented**
+    *   **Objective:** Exploit flawed access control logic that restricts sensitive administrative functions based solely on the HTTP request method.
+    *   **Exploitation Methodology:** Intercepted restricted role-upgrade administrative functions configured to block specific methods, changed the request method from `POST` to `GET` while supplying a valid user session cookie, and successfully executed privilege elevation.
+    *   📄 [View Step-by-Step Lab Write-Up](labs/method-based-access-control.md)
+
 ---
 
 ## 2. Cross-Site Request Forgery (CSRF) Analysis
