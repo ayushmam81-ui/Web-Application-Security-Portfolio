@@ -15,19 +15,19 @@ Welcome to the project and laboratory documentation sector of my security portfo
 ---
 
 ## 1. Access Control & Vulnerability Assessments
-* **Overview:** Detailed write-ups demonstrating how attackers exploit weak conditional authorization, predictable parameters (`roleid`), and misconfigured perimeter headers (`X-Original-URL`) to gain unauthorized administrative access[cite: 1].
-* **Key Tools:** Burp Suite (Repeater, Interceptor), Kali Linux[cite: 2].
+* **Overview:** Detailed write-ups demonstrating how attackers exploit weak conditional authorization, predictable parameters (`roleid`), and misconfigured perimeter headers (`X-Original-URL`) to gain unauthorized administrative access.
+* **Key Tools:** Burp Suite (Repeater, Interceptor), Kali Linux.
 * **Defensive Focus:** Implementing strict Server-Side Role-Based Access Control (RBAC) and robust session validation routines.
 
 ## 2. Business Logic & Workflow Manipulation
-* **Overview:** Practical walkthroughs targeting flawed assumptions in software workflows[cite: 2]. This section covers manipulating transactional flows by injecting negative boundary values into quantities and bypassing validation checks[cite: 2].
+* **Overview:** Practical walkthroughs targeting flawed assumptions in software workflows. This section covers manipulating transactional flows by injecting negative boundary values into quantities and bypassing validation checks.
 * **Key Tools:** Burp Suite Proxy, Custom payload parameters.
 * **Defensive Focus:** Enforcing server-side input boundaries, atomic transaction validations, and strict sequencing logic.
 
 ## 3. CSRF & Session Handling Analysis
-* **Overview:** Documentation on auditing state-changing application requests that lack cryptographic nonces or proper cookie flags[cite: 2].
+* **Overview:** Documentation on auditing state-changing application requests that lack cryptographic nonces or proper cookie flags.
 * **Key Tools:** Burp Suite, Browser Developer Tools.
-* **Defensive Focus:** Integrating unique anti-CSRF tokens per session and enforcing `SameSite=Strict/Lax` cookie attributes[cite: 2].
+* **Defensive Focus:** Integrating unique anti-CSRF tokens per session and enforcing `SameSite=Strict/Lax` cookie attributes.
 
 ---
 *Return to the main repository summary via the [Root README](../README.md).*
