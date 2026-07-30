@@ -52,37 +52,37 @@ I am a Forensic Science graduate specializing in digital forensics, web applicat
     *   **Exploitation Methodology:** Intercepted restricted role-upgrade administrative functions configured to block specific methods, changed the request method from `POST` to `GET` while supplying a valid user session cookie, and successfully executed privilege elevation.
     *   📄 [View Step-by-Step Lab Write-Up](labs/method-based-access-control.md)
 
-Practical Lab Assessments (Horizontal Access Control Labs)
+### Practical Lab Assessments (Horizontal Access Control Labs)
 
 Lab 1: User ID controlled by request parameter
 * **Objective**: Exploit sequential account identifier parameters to access other users' private data.
 * **Exploitation Methodology**: Logged into the account using `wiener:peter`, captured the request via Burp Suite, sent it to Repeater, changed the account ID parameter to `carlos`, extracted Carlos's API key from the response, and submitted it to solve the lab.
-* 📄 [View Step-by-Step Lab Write-Up](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/idor-lab1.md)
+* 📄 [View Step-by-Step Lab Write-Up](/labs/idor-lab1.md)
 
 Lab 2: User ID controlled by request parameter with unpredictable user IDs
 * **Objective**: Bypass horizontal access controls when user identifiers utilize randomized GUID formats instead of sequential numbers.
 * **Exploitation Methodology**: Logged in with credentials, inspected requests via Burp Suite revealing a GUID user format, located a blog post by `carlos` to harvest their GUID, replaced `wiener`'s GUID with Carlos's in Repeater, and retrieved the target data.
-* 📄 [View Step-by-Step Lab Write-Up](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/idor-lab2.md)
+* 📄 [View Step-by-Step Lab Write-Up](/labs/idor-lab2.md)
 
 Lab 3: User ID controlled by request parameter, data leakage in redirect
 * **Objective**: Retrieve sensitive user details from response bodies during temporary redirect sequences.
 * **Exploitation Methodology**: Logged into the account using `wiener:peter`, directly edited the URL parameter from `wiener` to `carlos`, and retrieved Carlos's API key from the redirected response to solve the lab.
-* 📄 [View Step-by-Step Lab Write-Up](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/idor-lab3.md)
+* 📄 [View Step-by-Step Lab Write-Up](labs/idor-lab3.md)
 
 Lab 4: User ID controlled by request parameter with password disclosure
 * **Objective**: Extract sensitive user account credentials prefilled in masked profile input fields via parameter manipulation.
 * **Exploitation Methodology**: Logged into `wiener`, sent the request to Repeater, replaced `wiener` with `administrator`, extracted the administrator's password from the response body, logged back in as the administrator, and completed the objective.
-* 📄 [View Step-by-Step Lab Write-Up](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/idor-lab4.md)
+* 📄 [View Step-by-Step Lab Write-Up](/labs/idor-lab4.md)
 
 Lab 5: Insecure direct object references (IDOR) on user files
 * **Objective**: Access confidential downloadable files or user transcripts stored with predictable naming structures.
 * **Exploitation Methodology**: Logged into the admin page, initiated an upgrade for `carlos`, captured the multi-step request workflow in Repeater, substituted `wiener`'s session cookie and parameters, and bypassed access controls.
-* 📄 [View Step-by-Step Lab Write-Up](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/access-control-lab5.md)
+* 📄 [View Step-by-Step Lab Write-Up](/labs/access-control-lab5.md)
 
 Lab 6: User ID sensitive data disclosure via multi-step profile update
 * **Objective**: Exploit complex profile update flows that fail to enforce consistent ownership validation across intermediate steps.
 * **Exploitation Methodology**: Logged into the administrator account, upgraded `carlos`, logged out, signed into `wiener`, copied the session cookies, and updated both requests in Repeater to successfully execute privilege transitions.
-* 📄 [View Step-by-Step Lab Write-Up](https://github.com/ayushmam81-ui/Web-Application-Security-Portfolio/blob/main/labs/access-control-lab6.md)
+* 📄 [View Step-by-Step Lab Write-Up](/labs/access-control-lab6.md)
 
 ---
 
